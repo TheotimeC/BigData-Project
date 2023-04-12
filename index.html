@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>ProjetCHU</title>
+  </head>
+  <body>
+    <h1>Rechercher un diagnostic X sur une période Y</h1>
+    <form method="get" action="/TotalDiagPeriode">
+      <label for="keyword">Mot-clé :</label>
+      <input type="text" id="keyword" name="keyword"><br>
+
+      <label for="date1">Date 1 :</label>
+      <input type="date" id="date1" name="date1"><br>
+
+      <label for="date2">Date 2 :</label>
+      <input type="date" id="date2" name="date2"><br>
+      <input type="submit" value="Rechercher">
+    </form>
+
+    <h1>Taux de consultation sur une période Y</h1>
+    <form method="get" action="/TotalConsultPeriode">
+
+      <label for="date1">Date 1 :</label>
+      <input type="date" id="date1" name="date1"><br>
+
+      <label for="date2">Date 2 :</label>
+      <input type="date" id="date2" name="date2"><br>
+      <input type="submit" value="Rechercher">
+    </form>
+
+    <h1>Taux d'hospitalisation sur une période Y</h1>
+    <form method="get" action="/TotalHospiPeriode">
+
+      <label for="date1">Date 1 :</label>
+      <input type="date" id="date1" name="date1"><br>
+
+      <label for="date2">Date 2 :</label>
+      <input type="date" id="date2" name="date2"><br>
+      <input type="submit" value="Rechercher">
+    </form>
+
+    <h1>Taux d'hospitalisation selon un diagnostic sur une période Y</h1>
+    <form method="get" action="/TotalHospiDiagPeriode">
+
+      <label for="keyword">Mot-clé :</label>
+      <input type="text" id="keyword" name="keyword"><br>
+
+      <label for="date1">Date 1 :</label>
+      <input type="date" id="date1" name="date1"><br>
+
+      <label for="date2">Date 2 :</label>
+      <input type="date" id="date2" name="date2"><br>
+      <input type="submit" value="Rechercher">
+    </form>
+    
+    <h1>Taux d'hospitalisation et de consultation par âge / sexe</h1>
+    <form method="get" action="/TotalHospiConsultAgeSexe">
+
+      <label> Trier par :</label>
+      <input type="checkbox" name="age" id="age">
+      <label for="checkbox1">Age</label>
+
+      <input type="checkbox" name="sexe" id="sexe">
+      <label for="checkbox2">Sexe</label>
+
+      <input type="submit" value="Rechercher">
+    </form>
+
+    <h1>Total des consultations par professionnel de santé</h1>
+    <form method="get" action="/TotalConsultPro">
+
+      <label for="keyword">Profession :</label>
+      <input type="text" id="profession" name="profession"><br>
+
+      <label for="date1">Date 1 :</label>
+      <input type="date" id="date1" name="date1"><br>
+
+      <label for="date2">Date 2 :</label>
+      <input type="date" id="date2" name="date2"><br>
+      <input type="submit" value="Rechercher">
+    </form>
+
+    <h1>Nombre de décès par localisation par année</h1>
+    <form method="get" action="/TotalConsultPro">
+
+      <label for="date1">Année de décès :</label>
+      <input type="number" id="date" name="date" min="1990" max="2023" step="1" value="2020">
+
+      <input type="submit" value="Rechercher">
+    </form>
+    
+    <script>
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+          if (this.checked) {
+            checkboxes.forEach((cb) => {
+              if (cb !== this) {
+                cb.checked = false;
+              }
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
