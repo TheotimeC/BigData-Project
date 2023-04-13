@@ -116,7 +116,7 @@
       }
 
        h1 {
-         width: 30%;
+        
          font-size: 1.5rem;
          font-weight: bold;
          margin-top: 20px;
@@ -132,8 +132,9 @@
         <a href="graphique.html">📊 Mes graphiques</a>
       </div>
     </header>
-    <h1>Rechercher un diagnostic X sur une période Y</h1>
+    
     <form method="get" action="/TotalDiagPeriode">
+      <h1>Rechercher un diagnostic X sur une période Y</h1>
       <label for="keyword">Mot-clé :</label>
       <input type="text" id="keyword" name="keyword"><br>
 
@@ -145,9 +146,9 @@
       <input type="submit" value="Rechercher">
     </form>
 
-    <h1>Taux de consultation sur une période Y</h1>
+  
     <form method="get" action="/TotalConsultPeriode">
-
+      <h1>Taux de consultation sur une période Y</h1>
       <label for="date1">Date 1 :</label>
       <input type="date" id="date1" name="date1"><br>
 
@@ -156,9 +157,9 @@
       <input type="submit" value="Rechercher">
     </form>
 
-    <h1>Taux d'hospitalisation sur une période Y</h1>
+  
     <form method="get" action="/TotalHospiPeriode">
-
+      <h1>Taux d'hospitalisation sur une période Y</h1>
       <label for="date1">Date 1 :</label>
       <input type="date" id="date1" name="date1"><br>
 
@@ -167,9 +168,9 @@
       <input type="submit" value="Rechercher">
     </form>
 
-    <h1>Taux d'hospitalisation selon un diagnostic sur une période Y</h1>
+    
     <form method="get" action="/TotalHospiDiagPeriode">
-
+<h1>Taux d'hospitalisation selon un diagnostic sur une période Y</h1>
       <label for="keyword">Mot-clé :</label>
       <input type="text" id="keyword" name="keyword"><br>
 
@@ -181,9 +182,9 @@
       <input type="submit" value="Rechercher">
     </form>
     
-    <h1>Taux d'hospitalisation et de consultation par âge / sexe</h1>
+ 
     <form method="get" action="/TotalHospiConsultAgeSexe">
-
+   <h1>Taux d'hospitalisation et de consultation par âge / sexe</h1>
       <label> Trier par :</label>
       <input type="checkbox" name="age" id="age">
       <label for="checkbox1">Age</label>
@@ -194,9 +195,9 @@
       <input type="submit" value="Rechercher">
     </form>
 
-    <h1>Total des consultations par professionnel de santé</h1>
+    
     <form method="get" action="/TotalConsultPro">
-
+<h1>Total des consultations par professionnel de santé</h1>
       <label for="keyword">Profession :</label>
       <input type="text" id="profession" name="profession"><br>
 
@@ -208,9 +209,9 @@
       <input type="submit" value="Rechercher">
     </form>
 
-    <h1>Nombre de décès par localisation par année</h1>
+  
     <form method="get" action="/DecesPeriode">
-
+  <h1>Nombre de décès par localisation par année</h1>
       <label for="date1">Année de décès :</label>
       <input type="number" id="date" name="date" min="1990" max="2023" step="1" value="2020">
 
