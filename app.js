@@ -45,7 +45,6 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
         return res.status(500).send(err);
       }
   
-      
       const collection = db.collection('Diagnostic');
   
       const keyword = req.query.keyword;
@@ -58,9 +57,8 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
           console.log(err);
           return res.status(500).send(err);
         }
-  
-        client.close();
         
+        client.close();
 
         csvWriter.writeRecords(docs)
         .then(() => {
