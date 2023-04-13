@@ -3,8 +3,135 @@
   <head>
     <meta charset="UTF-8">
     <title>ProjetCHU</title>
+    <style>
+      /* Style pour la navbar */
+      .navbar {
+        background-color: #333;
+        overflow: hidden;
+      }
+      
+      /* Liens dans la navbar */
+      .navbar a {
+        float: left;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+      }
+      
+      /* Liens actifs */
+      .active {
+        background-color: #4CAF50;
+      }
+      
+      /* Style pour les dropdowns */
+      .dropdown {
+        float: left;
+        overflow: hidden;
+      }
+      
+      /* Style pour le bouton du dropdown */
+      .dropdown .dropbtn {
+        font-size: 17px;  
+        border: none;
+        outline: none;
+        color: white;
+        padding: 14px 16px;
+        background-color: inherit;
+        margin: 0;
+      }
+      
+      /* Ajout d'une couleur de fond quand la souris passe sur le dropdown */
+      .navbar a:hover, .dropdown:hover .dropbtn {
+        background-color: #555;
+      }
+      
+      /* Style pour le dropdown actif */
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        z-index: 1;
+      }
+      
+      /* Liens dans le dropdown */
+      .dropdown-content a {
+        float: none;
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+      }
+      
+      /* Ajout d'une couleur de fond quand la souris passe sur les liens du dropdown */
+      .dropdown-content a:hover {
+        background-color: #ddd;
+      }
+      
+      /* Affichage du dropdown quand la souris passe dessus */
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      form {
+        align-items: left;
+        margin-top: 20px;
+        border: 2px solid #ccc;
+        width: 30%;
+        padding: 10px;
+        border-radius: 15px;
+      }
+
+      label {
+        margin-top: 10px;
+        font-weight: bold;
+        display: block;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      input[type="submit"] {
+        margin-top: 5px;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+        width: 100%;
+        max-width: 400px;
+        box-sizing: border-box;
+      }
+
+      input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+
+       h1 {
+         width: 30%;
+         font-size: 1.5rem;
+         font-weight: bold;
+         margin-top: 20px;
+         margin-bottom: px;
+      }
+    </style>
   </head>
+
   <body>
+    <header>
+      <div class="navbar">
+        <a class="active" href="index.html">✏️ Conception</a>
+        <a href="graphique.html">📊 Mes graphiques</a>
+      </div>
+    </header>
     <h1>Rechercher un diagnostic X sur une période Y</h1>
     <form method="get" action="/TotalDiagPeriode">
       <label for="keyword">Mot-clé :</label>
