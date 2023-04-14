@@ -7,6 +7,9 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use('/hospitalisation', express.static('hospitalisation'));
+app.use('/autre', express.static('autre'));
+app.use('/consultation', express.static('consultation'));
 
 //CONNECTION INFO
 const url = 'mongodb+srv://root:root@projetchu.0fj09qm.mongodb.net';
@@ -25,8 +28,42 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/graphique', (req, res) => {
-  res.sendFile(__dirname + '/graphique.html');
+//hospi
+
+app.get('/hospitalisation/age', (req, res) => {
+    res.sendFile(__dirname + '/hospitalisation/hage.html');
+});
+
+app.get('/hospitalisation/diag', (req, res) => {
+    res.sendFile(__dirname + '/hospitalisation/hdiag.html');
+});
+
+app.get('/hospitalisation/temps', (req, res) => {
+    res.sendFile(__dirname + '/hospitalisation/htemps.html');
+});
+
+//consult
+
+app.get('/consultation/pro', (req, res) => {
+    res.sendFile(__dirname + '/consultation/cpro.html');
+});
+
+app.get('/consultation/temps', (req, res) => {
+    res.sendFile(__dirname + '/consultation/ctemps.html');
+});
+
+app.get('/consultation/diag', (req, res) => {
+    res.sendFile(__dirname + '/consultation/cdiag.html');
+});
+
+//autre
+
+app.get('/autre/deces', (req, res) => {
+    res.sendFile(__dirname + '/autre/adeces.html');
+});
+
+app.get('/autre/satisfaction', (req, res) => {
+    res.sendFile(__dirname + '/consultation/asatisfaction.html');
 });
 
 

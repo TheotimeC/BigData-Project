@@ -3,234 +3,56 @@
   <head>
     <meta charset="UTF-8">
     <title>ProjetCHU</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
-      /* Style pour la navbar */
-      .navbar {
-        background-color: #333;
-        overflow: hidden;
-      }
-      
-      /* Liens dans la navbar */
-      .navbar a {
-        float: left;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        font-size: 17px;
-      }
-      
-      /* Liens actifs */
-      .active {
-        background-color: #4CAF50;
-      }
-      
-      /* Style pour les dropdowns */
-      .dropdown {
-        float: left;
-        overflow: hidden;
-      }
-      
-      /* Style pour le bouton du dropdown */
-      .dropdown .dropbtn {
-        font-size: 17px;  
-        border: none;
-        outline: none;
-        color: white;
-        padding: 14px 16px;
-        background-color: inherit;
-        margin: 0;
-      }
-      
-      /* Ajout d'une couleur de fond quand la souris passe sur le dropdown */
-      .navbar a:hover, .dropdown:hover .dropbtn {
-        background-color: #555;
-      }
-      
-      /* Style pour le dropdown actif */
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #f9f9f9;
-        min-width: 160px;
-        z-index: 1;
-      }
-      
-      /* Liens dans le dropdown */
-      .dropdown-content a {
-        float: none;
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        text-align: left;
-      }
-      
-      /* Ajout d'une couleur de fond quand la souris passe sur les liens du dropdown */
-      .dropdown-content a:hover {
-        background-color: #ddd;
-      }
-      
-      /* Affichage du dropdown quand la souris passe dessus */
-      .dropdown:hover .dropdown-content {
-        display: block;
-      }
-
-      form {
-        align-items: left;
-        margin-top: 20px;
-        border: 2px solid #ccc;
-        width: 30%;
-        padding: 10px;
-        border-radius: 15px;
-      }
-
-      label {
-        margin-top: 10px;
-        font-weight: bold;
-        display: block;
-      }
-
-      input[type="text"],
-      input[type="date"],
-      input[type="submit"] {
-        margin-top: 5px;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        font-size: 16px;
-        width: 100%;
-        max-width: 400px;
-        box-sizing: border-box;
-      }
-
-      input[type="submit"] {
-        background-color: #4CAF50;
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.2s ease-in-out;
-      }
-
-      input[type="submit"]:hover {
-        background-color: #3e8e41;
-      }
-
-       h1 {
-        
-         font-size: 1.5rem;
-         font-weight: bold;
-         margin-top: 20px;
-         margin-bottom: px;
-      }
+    
     </style>
   </head>
 
   <body>
     <header>
-      <div class="navbar">
-        <a class="active" href="index.html">✏️ Conception</a>
-        <a href="graphique.html">📊 Mes graphiques</a>
-      </div>
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">📈Mes graphiques</a>
+          </div>
+          <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">🏥Hospitalisation
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/hospitalisation/htemps.html">🕝 Temps</a></li>
+              <li><a href="/hospitalisation/hdiag.html">🩺 Diagnostic</a></li>
+              <li><a href="/hospitalisation/hage.html">👤 Sexe, age</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">👀 Consultation
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/consultation/ctemps.html">🕝 Temps</a></li>
+              <li><a href="/consultation/cdiag.html">🩺 Diagnostic</a></li>
+              <li><a href="consultation/cpro.html">👩‍⚕️ Par professionel</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">⚕️ Autre
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/autre/adeces.html">🪦 Deces</a></li>
+              <li><a href="/autre/asatisfaction.html">⭐ Satisfaction</a></li>
+            </ul>
+          </li>
+
+          </li>
+          </ul>
+          
+          </div>
+      </nav>
     </header>
-    
-    <form method="get" action="/TotalDiagPeriode">
-      <h1>Rechercher un diagnostic X sur une période Y</h1>
-      <label for="keyword">Mot-clé :</label>
-      <input type="text" id="keyword" name="keyword"><br>
-
-      <label for="date1">Date 1 :</label>
-      <input type="date" id="date1" name="date1"><br>
-
-      <label for="date2">Date 2 :</label>
-      <input type="date" id="date2" name="date2"><br>
-      <input type="submit" value="Rechercher">
-    </form>
-
-  
-    <form method="get" action="/TotalConsultPeriode">
-      <h1>Taux de consultation sur une période Y</h1>
-      <label for="date1">Date 1 :</label>
-      <input type="date" id="date1" name="date1"><br>
-
-      <label for="date2">Date 2 :</label>
-      <input type="date" id="date2" name="date2"><br>
-      <input type="submit" value="Rechercher">
-    </form>
-
-  
-    <form method="get" action="/TotalHospiPeriode">
-      <h1>Taux d'hospitalisation sur une période Y</h1>
-      <label for="date1">Date 1 :</label>
-      <input type="date" id="date1" name="date1"><br>
-
-      <label for="date2">Date 2 :</label>
-      <input type="date" id="date2" name="date2"><br>
-      <input type="submit" value="Rechercher">
-    </form>
-
-    
-    <form method="get" action="/TotalHospiDiagPeriode">
-<h1>Taux d'hospitalisation selon un diagnostic sur une période Y</h1>
-      <label for="keyword">Mot-clé :</label>
-      <input type="text" id="keyword" name="keyword"><br>
-
-      <label for="date1">Date 1 :</label>
-      <input type="date" id="date1" name="date1"><br>
-
-      <label for="date2">Date 2 :</label>
-      <input type="date" id="date2" name="date2"><br>
-      <input type="submit" value="Rechercher">
-    </form>
-    
- 
-    <form method="get" action="/TotalHospiConsultAgeSexe">
-   <h1>Taux d'hospitalisation et de consultation par âge / sexe</h1>
-      <label> Trier par :</label>
-      <input type="checkbox" name="age" id="age">
-      <label for="checkbox1">Age</label>
-
-      <input type="checkbox" name="sexe" id="sexe">
-      <label for="checkbox2">Sexe</label>
-
-      <input type="submit" value="Rechercher">
-    </form>
-
-    
-    <form method="get" action="/TotalConsultPro">
-<h1>Total des consultations par professionnel de santé</h1>
-      <label for="keyword">Profession :</label>
-      <input type="text" id="profession" name="profession"><br>
-
-      <label for="date1">Date 1 :</label>
-      <input type="date" id="date1" name="date1"><br>
-
-      <label for="date2">Date 2 :</label>
-      <input type="date" id="date2" name="date2"><br>
-      <input type="submit" value="Rechercher">
-    </form>
-
-  
-    <form method="get" action="/DecesPeriode">
-  <h1>Nombre de décès par localisation par année</h1>
-      <label for="date1">Année de décès :</label>
-      <input type="number" id="date" name="date" min="1990" max="2023" step="1" value="2020">
-
-      <input type="submit" value="Rechercher">
-    </form>
-    
-    <script>
-      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-      checkboxes.forEach((checkbox) => {
-        checkbox.addEventListener('change', function() {
-          if (this.checked) {
-            checkboxes.forEach((cb) => {
-              if (cb !== this) {
-                cb.checked = false;
-              }
-            });
-          }
-        });
-      });
-    </script>
   </body>
 </html>
