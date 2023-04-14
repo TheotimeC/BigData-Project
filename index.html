@@ -11,46 +11,109 @@
   <body>
     <!--navbar-->
     <header>
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <a class="navbar-brand" href="index.html">📈Mes graphiques</a>
-          </div>
-          <ul class="nav navbar-nav">
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">🏥Hospitalisation
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="/hospitalisation/htemps.html">🕝 Temps</a></li>
-              <li><a href="/hospitalisation/hdiag.html">🩺 Diagnostic</a></li>
-              <li><a href="/hospitalisation/hage.html">👤 Sexe, age</a></li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">👀 Consultation
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="/consultation/ctemps.html">🕝 Temps</a></li>
-              <li><a href="/consultation/cdiag.html">🩺 Diagnostic</a></li>
-              <li><a href="consultation/cpro.html">👩‍⚕️ Par professionel</a></li>
-            </ul>
-          </li>
-
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">⚕️ Autre
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="/autre/adeces.html">🪦 Deces</a></li>
-              <li><a href="/autre/asatisfaction.html">⭐ Satisfaction</a></li>
-            </ul>
-          </li>
-
-          </li>
-          </ul>
-          
-          </div>
-      </nav>
+      <div class="navbar">
+        <a class="active" href="index.html">✏️ Conception</a>
+        <a href="graphique.html">📊 Mes graphiques</a>
+      </div>
     </header>
-    <!--navbar-->
+    
+    <form method="get" action="/TotalDiagPeriode">
+      <h1>Rechercher un diagnostic X sur une période Y</h1>
+      <label for="keyword">Mot-clé :</label>
+      <input type="text" id="keyword" name="keyword"><br>
+      
+      <label for="date1">Date 1 :</label>
+      <input type="date" id="date1" name="date1"><br>
+      
+      <label for="days">Days :</label>
+      <input type="number" id="days" name="days"><br>
+      <input type="submit" value="Rechercher">
+    </form>
+
+  
+    <form method="get" action="/TotalConsultPeriode">
+      <h1>Taux de consultation sur une période Y</h1>
+      <label for="date1">Date 1 :</label>
+      <input type="date" id="date1" name="date1"><br>
+
+      <label for="date2">Date 2 :</label>
+      <input type="date" id="date2" name="date2"><br>
+      <input type="submit" value="Rechercher">
+    </form>
+
+  
+    <form method="get" action="/TotalHospiPeriode">
+      <h1>Taux d'hospitalisation sur une période Y</h1>
+      <label for="date1">Date 1 :</label>
+      <input type="date" id="date1" name="date1"><br>
+
+      <label for="date2">Date 2 :</label>
+      <input type="date" id="date2" name="date2"><br>
+      <input type="submit" value="Rechercher">
+    </form>
+
+    
+    <form method="get" action="/TotalHospiDiagPeriode">
+<h1>Taux d'hospitalisation selon un diagnostic sur une période Y</h1>
+      <label for="keyword">Mot-clé :</label>
+      <input type="text" id="keyword" name="keyword"><br>
+
+      <label for="date1">Date 1 :</label>
+      <input type="date" id="date1" name="date1"><br>
+
+      <label for="date2">Date 2 :</label>
+      <input type="date" id="date2" name="date2"><br>
+      <input type="submit" value="Rechercher">
+    </form>
+    
+ 
+    <form method="get" action="/TotalHospiConsultAgeSexe">
+   <h1>Taux d'hospitalisation et de consultation par âge / sexe</h1>
+      <label> Trier par :</label>
+      <input type="checkbox" name="age" id="age">
+      <label for="checkbox1">Age</label>
+
+      <input type="checkbox" name="sexe" id="sexe">
+      <label for="checkbox2">Sexe</label>
+
+      <input type="submit" value="Rechercher">
+    </form>
+
+    
+    <form method="get" action="/TotalConsultPro">
+<h1>Total des consultations par professionnel de santé</h1>
+      <label for="keyword">Profession :</label>
+      <input type="text" id="profession" name="profession"><br>
+
+      <label for="date1">Date 1 :</label>
+      <input type="date" id="date1" name="date1"><br>
+
+      <label for="date2">Date 2 :</label>
+      <input type="date" id="date2" name="date2"><br>
+      <input type="submit" value="Rechercher">
+    </form>
+
+  
+    <form method="get" action="/DecesPeriode">
+  <h1>Nombre de décès par localisation par année</h1>
+      <label for="date1">Année de décès :</label>
+      <input type="number" id="date" name="date" min="1990" max="2023" step="1" value="2020">
+
+      <input type="submit" value="Rechercher">
+    </form>
+    
+    <script>
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+          if (this.checked) {
+            checkboxes.forEach((cb) => {
+              if (cb !== this) {
+                cb.checked = false;
+              }
+            });
+          }
+        });
+      });
+    </script>
   </body>
