@@ -10,6 +10,7 @@ app.use(express.static('public'));
 app.use('/hospitalisation', express.static('hospitalisation'));
 app.use('/autre', express.static('autre'));
 app.use('/consultation', express.static('consultation'));
+app.use(express.static(__dirname + '/public'));
 
 //CONNECTION INFO
 const url = 'mongodb+srv://root:root@projetchu.0fj09qm.mongodb.net';
@@ -45,7 +46,7 @@ app.get('/hospitalisation/temps', (req, res) => {
 //consult
 
 app.get('/consultation/pro', (req, res) => {
-    res.sendFile(__dirname + '/consultation/cpro.html');
+    res.sendFile(__dirname + '/consultation/ctemps.html');
 });
 
 app.get('/consultation/temps', (req, res) => {
@@ -65,6 +66,11 @@ app.get('/autre/deces', (req, res) => {
 app.get('/autre/satisfaction', (req, res) => {
     res.sendFile(__dirname + '/consultation/asatisfaction.html');
 });
+
+//css 
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, 'public/css/style.css'));
+  });
 
 
 

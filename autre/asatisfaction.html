@@ -4,6 +4,71 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+      body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+  
+  form {
+    width: 100%;
+    background-color: #ffffff;
+    margin: 30px ;
+    width: 35%;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-top: 0;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="date"],
+  input[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+  }
+  
+  input[type="submit"] {
+    background-color: #4CAF50;
+    padding: 10px;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #3e8e41;
+  }
+  
+  input[type="submit"]:active {
+    background-color: #3e8e41;
+    box-shadow: none;
+    outline: none;
+  }
+  
+  input[type="submit"]:focus {
+    outline: none;
+  }
+  
+    </style>
   </head>   
     <!--navbar-->
     <header>
@@ -49,3 +114,13 @@
         </nav>
       </header>
       <!--navbar-->
+
+      <body>
+        <form method="get" action="/DecesPeriode">
+          <h1>Taux global de satisfaction par région sur l'année X</h1>
+              <label for="date1">Année :</label>
+              <input type="number" id="date" name="date" min="1990" max="2023" step="1" value="2020">
+              <input type="submit" value="Rechercher">
+            </form>  
+    
+      </body>
