@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-
-  <head>
-    <meta charset="UTF-8">
-    <title>ProjetCHU</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  </head>
-
-  <body>
-    <!--navbar-->
+<body>
     <header>
       <div class="navbar">
         <a class="active" href="index.html">✏️ Conception</a>
@@ -21,12 +10,12 @@
       <h1>Rechercher un diagnostic X sur une période Y</h1>
       <label for="keyword">Mot-clé :</label>
       <input type="text" id="keyword" name="keyword"><br>
-      
+
       <label for="date1">Date 1 :</label>
       <input type="date" id="date1" name="date1"><br>
-      
-      <label for="days">Days :</label>
-      <input type="number" id="days" name="days"><br>
+
+      <label for="date2">Date 2 :</label>
+      <input type="date" id="date2" name="date2"><br>
       <input type="submit" value="Rechercher">
     </form>
 
@@ -94,14 +83,7 @@
     </form>
 
   
-    <form method="get" action="/DecesPeriode">
-  <h1>Nombre de décès par localisation par année</h1>
-      <label for="date1">Année de décès :</label>
-      <input type="number" id="date" name="date" min="1990" max="2023" step="1" value="2020">
-
-      <input type="submit" value="Rechercher">
-    </form>
-    
+ 
     <script>
       const checkboxes = document.querySelectorAll('input[type="checkbox"]');
       checkboxes.forEach((checkbox) => {
@@ -117,3 +99,4 @@
       });
     </script>
   </body>
+</html>

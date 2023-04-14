@@ -1,0 +1,140 @@
+<head>
+    <meta charset="UTF-8">
+    <title>consultation temps</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+      body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+  
+  form {
+    width: 100%;
+    background-color: #ffffff;
+    margin: 30px ;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  
+  h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-top: 0;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  input[type="date"],
+  input[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+  }
+  
+  input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #3e8e41;
+  }
+  
+  input[type="submit"]:active {
+    background-color: #3e8e41;
+    box-shadow: none;
+    outline: none;
+  }
+  
+  input[type="submit"]:focus {
+    outline: none;
+  }
+  
+    </style>
+  </head>
+ <!--navbar-->
+    <header>
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">🏥Hospitalisation
+              <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/hospitalisation/htemps.html">🕝 Temps</a></li>
+                <li><a href="/hospitalisation/hdiag.html">🩺 Diagnostic</a></li>
+                <li><a href="/hospitalisation/hage.html">👤 Sexe, age</a></li>
+              </ul>
+            </li>
+  
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">👀 Consultation
+              <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/consultation/ctemps.html">🕝 Temps</a></li>
+                <li><a href="/consultation/cdiag.html">🩺 Diagnostic</a></li>
+                <li><a href="consultation/cpro.html">👩‍⚕️ Par professionel</a></li>
+              </ul>
+            </li>
+  
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">⚕️ Autre
+              <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/autre/adeces.html">🪦 Deces</a></li>
+             
+              </ul>
+            </li>
+  
+            </li>
+            </ul>
+            
+            </div>
+        </nav>
+      </header>
+      <!--navbar-->
+
+      <body>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-3 col-md-6 col-lg-4" >
+             <form method="get" action="/TotalConsultPeriode">
+              <h1>Taux de consultation sur une période Y</h1>
+              <label for="date1">Date 1 :</label>
+              <input type="date" id="date1" name="date1"><br>
+              <label><input type="radio" name="duree" value="7j">  7 jours</label>
+              <label><input type="radio" name="duree" value="15j">  15 jours</label>
+              <label><input type="radio" name="duree" value="30j">  30 jours</label>
+              <label><input type="radio" name="duree" value="3mois">  3 mois</label>
+              <label><input type="radio" name="duree" value="6mois">  6 mois</label>
+              <label><input type="radio" name="duree" value="1an">  1 an</label>
+              <label><input type="radio" name="duree" value="2ans">  2 ans</label>
+              <label><input type="radio" name="duree" value="3ans">  3 ans</label>
+              <label><input type="radio" name="duree" value="5ans">  5 ans</label>
+              <label><input type="radio" name="duree" value="10ans">  10 ans</label>
+
+              <input type="submit" value="Rechercher">
+            </form>
+            </div>
+            <div class="col-sm-9 col-md-6 col-lg-8" style=" border: 1px solid #CCC;  border-radius: 5px; margin: 25px; height: 75%; width:62%; ">
+            </div>
+          </div>
+        </div>
+      </body>
