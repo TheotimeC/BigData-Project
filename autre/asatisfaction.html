@@ -16,7 +16,6 @@
     width: 100%;
     background-color: #ffffff;
     margin: 30px ;
-    width: 35%;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -116,20 +115,19 @@
 
       <body>
 
-        <div class="row">
-          <div class="col-4">
-
-          </div>
-          <div class="col-8">
-        <form method="get" action="/DecesPeriode">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-3 col-md-6 col-lg-4" >
+              <form method="get" action="/DecesPeriode">
           <h1>Taux global de satisfaction par région sur l'année X</h1>
               <label for="date1">Année :</label>
               <input type="number" id="date" name="date" min="1990" max="2023" step="1" value="2020">
               <input type="submit" value="Rechercher">
         </form>
+            </div>
+            <div class="col-sm-9 col-md-6 col-lg-8" style=" border: 1px solid #CCC;  border-radius: 5px; padding: 10px; height: 75%; ">
+            
+            </div>
           </div>
         </div>
-
-          
-    
       </body>

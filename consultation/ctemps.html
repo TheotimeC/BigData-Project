@@ -16,7 +16,6 @@
     width: 100%;
     background-color: #ffffff;
     margin: 30px ;
-    width: 35%;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -74,9 +73,6 @@
     <header>
         <nav class="navbar navbar-default">
           <div class="container-fluid">
-            <div class="navbar-header">
-              <a class="navbar-brand" href="index.html">📈Mes graphiques</a>
-            </div>
             <ul class="nav navbar-nav">
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#">🏥Hospitalisation
@@ -116,20 +112,29 @@
       <!--navbar-->
 
       <body>
-        <div class="row">
-          <div class="col-4">
-            <form method="get" action="/TotalConsultPeriode">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-3 col-md-6 col-lg-4" >
+             <form method="get" action="/TotalConsultPeriode">
               <h1>Taux de consultation sur une période Y</h1>
               <label for="date1">Date 1 :</label>
               <input type="date" id="date1" name="date1"><br>
-        
-              <label for="date2">Date 2 :</label>
-              <input type="date" id="date2" name="date2"><br>
+              <label><input type="radio" name="duree" value="7j">  7 jours</label>
+              <label><input type="radio" name="duree" value="15j">  15 jours</label>
+              <label><input type="radio" name="duree" value="30j">  30 jours</label>
+              <label><input type="radio" name="duree" value="3mois">  3 mois</label>
+              <label><input type="radio" name="duree" value="6mois">  6 mois</label>
+              <label><input type="radio" name="duree" value="1an">  1 an</label>
+              <label><input type="radio" name="duree" value="2ans">  2 ans</label>
+              <label><input type="radio" name="duree" value="3ans">  3 ans</label>
+              <label><input type="radio" name="duree" value="5ans">  5 ans</label>
+              <label><input type="radio" name="duree" value="10ans">  10 ans</label>
+
               <input type="submit" value="Rechercher">
             </form>
-          </div>
-          <div class="col-8">
-
+            </div>
+            <div class="col-sm-9 col-md-6 col-lg-8" style=" border: 1px solid #CCC;  border-radius: 5px; padding: 10px; height: 75%; ">
+            </div>
           </div>
         </div>
       </body>
