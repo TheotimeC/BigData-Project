@@ -77,7 +77,6 @@ app.get('/', function(req, res) {
   });
 
 
-
 //CONNECT TO MONGODB
 MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
 
@@ -438,3 +437,4 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
 app.listen(3000, () => {
     console.log('Le serveur est en cours d\'exécution sur le port 3000');
 });
+
