@@ -117,18 +117,25 @@
       <!--navbar-->
 
       <body>
+        <div class="row">
+          <div class="col-4">
+                  <form method="get" action="/TotalConsultPro">
+                   <h1>Total des consultations par professionnel de santé</h1>
+                  <label for="keyword">Profession :</label>
+                  <input type="text" id="profession" name="profession"><br>
             
-    <form method="get" action="/TotalConsultPro">
-      <h1>Total des consultations par professionnel de santé</h1>
-            <label for="keyword">Profession :</label>
-            <input type="text" id="profession" name="profession"><br>
-      
-            <label for="date1">Date 1 :</label>
-            <input type="date" id="date1" name="date1"><br>
-      
-            <label for="date2">Date 2 :</label>
-            <input type="date" id="date2" name="date2"><br>
-            <input type="submit" value="Rechercher">
-          </form>
+                  <label for="date1">Date 1 :</label>
+                  <input type="date" id="date1" name="date1"><br>
+            
+                  <label for="date2">Date 2 :</label>
+                  <input type="date" id="date2" name="date2"><br>
+                  <input type="submit" value="Rechercher">
+                </form>
+          </div>
+          <div class="col-8">
+
+          </div>
+        </div>
+    
       
       </body>

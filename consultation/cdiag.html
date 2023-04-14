@@ -117,16 +117,25 @@
       <!--navbar-->
 
       <body>
-        <form method="get" action="/TotalDiagPeriode">
-          <h1>Taux de consultation des patients par rapport à un diagnostic X sur une période de temps Y</h1>
-          <label for="keyword">Mot-clé :</label>
-          <input type="text" id="keyword" name="keyword"><br>
-    
-          <label for="date1">Date 1 :</label>
-          <input type="date" id="date1" name="date1"><br>
-    
-          <label for="date2">Date 2 :</label>
-          <input type="date" id="date2" name="date2"><br>
-          <input type="submit" value="Rechercher">
-        </form>    
+
+        <div class="row">
+          <div class="col-4">
+              <form method="get" action="/TotalDiagPeriode">
+              <h1>Taux de consultation des patients par rapport à un diagnostic X sur une période de temps Y</h1>
+              <label for="keyword">Mot-clé :</label>
+              <input type="text" id="keyword" name="keyword"><br>
+        
+              <label for="date1">Date 1 :</label>
+              <input type="date" id="date1" name="date1"><br>
+        
+              <label for="date2">Date 2 :</label>
+              <input type="date" id="date2" name="date2"><br>
+              <input type="submit" value="Rechercher">
+              </form>    
+          </div>
+          <div class="col-8">
+
+          </div>
+        </div>
+        
       </body>

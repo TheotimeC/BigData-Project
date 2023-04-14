@@ -180,18 +180,23 @@
       <!--navbar-->
 
       <body>
+        <div class="row">
+          <div class="col-4">
+            <form method="get" action="/TotalHospiDiagPeriode">
+              <h1>Taux d'hospitalisation selon un diagnostic sur une période Y</h1>
+                  <label for="keyword">Mot-clé :</label>
+                  <input type="text" id="keyword" name="keyword"><br>
             
-    <form method="get" action="/TotalHospiDiagPeriode">
-      <h1>Taux d'hospitalisation selon un diagnostic sur une période Y</h1>
-            <label for="keyword">Mot-clé :</label>
-            <input type="text" id="keyword" name="keyword"><br>
-      
-            <label for="date1">Date 1 :</label>
-            <input type="date" id="date1" name="date1"><br>
-      
-            <label for="date2">Date 2 :</label>
-            <input type="date" id="date2" name="date2"><br>
-            <input type="submit" value="Rechercher">
-          </form>
-          
+                  <label for="date1">Date 1 :</label>
+                  <input type="date" id="date1" name="date1"><br>
+            
+                  <label for="date2">Date 2 :</label>
+                  <input type="date" id="date2" name="date2"><br>
+                  <input type="submit" value="Rechercher">
+            </form>
+          </div>
+          <div class="col-8">
+
+          </div>
+        </div>
       </body>

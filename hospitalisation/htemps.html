@@ -117,13 +117,22 @@
       <!--navbar-->
 
       <body>
-        <form method="get" action="/TotalHospiPeriode">
-          <h1>Taux d'hospitalisation sur une période Y</h1>
-          <label for="date1">Date 1 :</label>
-          <input type="date" id="date1" name="date1"><br>
-    
-          <label for="date2">Date 2 :</label>
-          <input type="date" id="date2" name="date2"><br>
-          <input type="submit" value="Rechercher">
-        </form>    
+        <div class="row">
+          <div class="col-4">
+            <form method="get" action="/TotalHospiPeriode">
+              <h1>Taux d'hospitalisation sur une période Y</h1>
+                  <label for="date1">Date 1 :</label>
+                  <input type="date" id="date1" name="date1"><br>
+            
+                  <label for="date2">Date 2 :</label>
+                  <input type="date" id="date2" name="date2"><br>
+                  <input type="submit" value="Rechercher">
+            </form>    
+          </div>
+          <div class="col-8">
+
+          </div>
+        </div>
+
+        
       </body>

@@ -118,11 +118,19 @@
 
 
       <body>
-        <form method="get" action="/DecesPeriode">
-          <h1>Nombre de décès par localisation par année</h1>
-              <label for="date1">Année de décès :</label>
-              <input type="number" id="date" name="date" min="1990" max="2023" step="1" value="2020">
-        
-              <input type="submit" value="Rechercher">
-            </form>        
+
+        <div class="row">
+          <div class="col-4">
+            <form method="get" action="/DecesPeriode">
+              <h1>Nombre de décès par localisation par année</h1>
+                <label for="date1">Année de décès :</label>
+                <input type="number" id="date" name="date" min="1990" max="2023" step="1" value="2020">
+                <input type="submit" value="Rechercher">
+            </form>     
+          </div>
+          <div class="col-8">
+
+          </div>
+        </div>
+          
       </body>

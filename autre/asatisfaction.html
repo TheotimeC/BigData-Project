@@ -48,7 +48,6 @@
   
   input[type="submit"] {
     background-color: #4CAF50;
-    padding: 10px;
     color: white;
     border: none;
     cursor: pointer;
@@ -116,11 +115,21 @@
       <!--navbar-->
 
       <body>
+
+        <div class="row">
+          <div class="col-4">
+
+          </div>
+          <div class="col-8">
         <form method="get" action="/DecesPeriode">
           <h1>Taux global de satisfaction par région sur l'année X</h1>
               <label for="date1">Année :</label>
               <input type="number" id="date" name="date" min="1990" max="2023" step="1" value="2020">
               <input type="submit" value="Rechercher">
-            </form>  
+        </form>
+          </div>
+        </div>
+
+          
     
       </body>

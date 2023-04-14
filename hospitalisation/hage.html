@@ -117,15 +117,21 @@
       <!--navbar-->
 
       <body>
-        <form method="get" action="/TotalHospiConsultAgeSexe">
-          <h1>Taux d'hospitalisation et de consultation par âge / sexe</h1>
-             <label> Trier par :</label>
-             <input type="checkbox" name="age" id="age">
-             <label for="checkbox1">Age</label>
+        <div class="row">
+          <div class="col-8">
+          <form method="get" action="/TotalHospiConsultAgeSexe">
+            <h1>Taux d'hospitalisation et de consultation par âge / sexe</h1>
+               <label> Trier par :</label>
+               <input type="radio" name="age" id="age">
+               <label for="radio1">Age</label>
+         
+               <input type="radio" name="sexe" id="sexe">
+               <label for="radio1">Sexe</label>
+               <input type="submit" value="Rechercher">
+             </form> 
+          </div>      
+          <div class="col-4"></div>
+          <h1>fr</h1>
+        </div>
        
-             <input type="checkbox" name="sexe" id="sexe">
-             <label for="checkbox2">Sexe</label>
-       
-             <input type="submit" value="Rechercher">
-           </form>       
       </body>
