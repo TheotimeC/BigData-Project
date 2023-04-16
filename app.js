@@ -58,6 +58,34 @@ const TotalHospiDiagPeriodeCSV = createObjectCsvWriter({
   fieldDelimiter: ';'   
 });
 
+const TotalHospiAgeCSV = createObjectCsvWriter({
+  path: './CSVrequetes/TotalHospiAge.csv',
+  header: [
+    { id: '_id', title: 'Age' },
+    { id: 'total', title: 'Total' }
+  ],
+  fieldDelimiter: ';'   
+});
+
+const TotalHospiSexeCSV = createObjectCsvWriter({
+  path: './CSVrequetes/TotalHospiSexe.csv',
+  header: [
+    { id: '_id', title: 'Sexe' },
+    { id: 'total', title: 'Total' }
+  ],
+  fieldDelimiter: ';'   
+});
+
+const DecesPeriodeCSV = createObjectCsvWriter({
+  path: './CSVrequetes/DecesPeriode.csv',
+  header: [
+    { id: 'lieu', title: 'Lieu' },
+    { id: 'count', title: 'Total' }
+  ],
+  fieldDelimiter: ';'   
+});
+
+
 
 
 //--------------------------------------------------------------//
@@ -207,9 +235,11 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
               return res.status(500).send(error);
             }
   
-        //res.send(results);
+            res.sendFile(__dirname + '/consultation/cdiag.html');
       });
+      
     });
+    
   });
   
 
@@ -345,7 +375,7 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
               return res.status(500).send(error);
             }
   
-        //res.send(results);
+            res.sendFile(__dirname + '/consultation/ctemps.html');
       });
     });
 
@@ -484,7 +514,7 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
               return res.status(500).send(error);
             }
   
-        //res.send(results);
+            res.sendFile(__dirname + '/hospitalisation/htemps.html');
       });
     });
 
@@ -573,7 +603,7 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
         return res.status(500).send(error);
       }
         
-      res.send(results);
+      res.sendFile(__dirname + '/hospitalisation/hdiag.html');
       });
 
     });
@@ -584,39 +614,92 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
   //-------------------------------------------------------------------//
   app.get('/TotalHospiConsultAgeSexe', (req, res) => {
     const client = new MongoClient(url, { useUnifiedTopology: true });
-    client.connect(function(err) {
+    client.connect(async function(err) {
       if (err) {
         console.log(err);
         return res.status(500).send(err);
       }
+      
+      const db = client.db('CHU');
+      const collection = db.collection('Patient');
   
-      const collection = db.collection('Hospitalisation');
-  
-      const keyword = req.query.keyword;
-      const date1 = req.query.date1;
-      const date2 = req.query.date2;
-      const query = { diagnostic: { $regex: keyword, $options: 'i' } };
-  
-      collection.find(query).toArray(function(err, docs) {
-        if (err) {
-          console.log(err);
-          return res.status(500).send(err);
+      const choix = req.query.age; 
+      var cursor;
+      if(choix=='age'){
+         cursor = collection.aggregate([
+          {
+            $lookup: {
+              from: "Hospitalisation",
+              localField: "id_patient",
+              foreignField: "id_patient",
+              as: "hospitalisations"
+            }
+          },
+          {
+            $unwind: "$hospitalisations"
+          },
+          {
+            $group: {
+              _id: "$age",
+              total_hospitalisations: { $sum: 1 }
+            }
+          }
+        ]);
+    }else if(choix=='sexe'){
+       cursor = collection.aggregate([
+        {
+          $lookup: {
+            from: "Hospitalisation",
+            localField: "id_patient",
+            foreignField: "id_patient",
+            as: "hospitalisations"
+          }
+        },
+        {
+          $unwind: "$hospitalisations"
+        },
+        {
+          $group: {
+            _id: "$sexe",
+            total_hospitalisations: { $sum: 1 }
+          }
         }
-        
+      ]);
+
+    }
+
+      const results = await cursor.toArray();
+
+      const flatResults = results.map(result => ({
+        _id : result._id,
+        total: result.total_hospitalisations,
+      }));
+
         client.close();
 
-        csvWriter.writeRecords(docs)
-        .then(() => {
-          console.log('Les résultats ont été écrits dans le fichier diagnostics.csv');
-          return res.send(docs);
-        })
-        .catch((error) => {
-          console.log(error);
-          return res.status(500).send(error);
-        });
+        if(choix=='age'){
+            try {
+                  await TotalHospiAgeCSV.writeRecords(flatResults);
+                  console.log('Les résultats ont été écrits dans le fichier TotalHospiAgeSexe.csv');
+                } catch (error) {
+                  console.log(error);
+                  return res.status(500).send(error);
+                }
+        }else if(choix=='sexe'){
+          try {
+            await TotalHospiSexeCSV.writeRecords(flatResults);
+            console.log('Les résultats ont été écrits dans le fichier TotalHospiAgeSexe.csv');
+          } catch (error) {
+            console.log(error);
+            return res.status(500).send(error);
+          }
+        }
+
+            res.sendFile(__dirname + '/hospitalisation/hage.html');
       });
+      
     });
-  });
+
 
   //-------------------------------------------------------------------//
   //---------------------APPGET TotalConsultPro------------------------//
@@ -662,39 +745,55 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
   //-------------------------------------------------------------------//
   app.get('/DecesPeriode', (req, res) => {
     const client = new MongoClient(url, { useUnifiedTopology: true });
-    client.connect(function(err) {
+    client.connect(async function(err) {
       if (err) {
         console.log(err);
         return res.status(500).send(err);
       }
+      const db = client.db('CHU');
+      const collection = db.collection('Deces');
   
-      const collection = db.collection('Hospitalisation');
-  
-      const keyword = req.query.keyword;
-      const date1 = req.query.date1;
-      const date2 = req.query.date2;
-      const query = { diagnostic: { $regex: keyword, $options: 'i' } };
-  
-      collection.find(query).toArray(function(err, docs) {
-        if (err) {
-          console.log(err);
-          return res.status(500).send(err);
+      const date = req.query.date;
+
+      const cursor = collection.aggregate([
+        {
+          $match: {
+            date_deces: {
+              $gte: "2019-01-01",
+              $lt: "2020-01-01"
+            }
+          }
+        },
+        {
+          $group: {
+            _id: "$lieu_naissance",
+            count: { $sum: 1 }
+          }
         }
-        
+      ]);
+
+      const results = await cursor.toArray();
+
+      const flatResults = results.map(result => ({
+        lieu : result._id,
+        count: result.count
+      }));
+
         client.close();
 
-        csvWriter.writeRecords(docs)
-        .then(() => {
-          console.log('Les résultats ont été écrits dans le fichier diagnostics.csv');
-          return res.send(docs);
-        })
-        .catch((error) => {
-          console.log(error);
-          return res.status(500).send(error);
-        });
+        try {
+              await DecesPeriodeCSV.writeRecords(flatResults);
+              console.log('Les résultats ont été écrits dans le fichier DecesPeriode.csv');
+            } catch (error) {
+              console.log(error);
+              return res.status(500).send(error);
+            }
+  
+            res.sendFile(__dirname + '/autre/adeces.html');
       });
+      
     });
-  });
+ 
 
 
 
