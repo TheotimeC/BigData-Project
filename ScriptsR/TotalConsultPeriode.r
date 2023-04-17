@@ -11,11 +11,11 @@ library(ggthemes) # permet de donner un style au graphiques
 
 # Stockage du csv dans une variable
 
-results <- read.csv2("C:\\Users\\Théotime\\Nextcloud\\COURS\\ProjetCHU\\ProjetCHU\\CSVrequetes\\TotalConsultPeriode.csv", header=TRUE, sep=";")
+results <- read.csv2("C:\\Users\\yoann\\Documents\\DATA\\csv graph\\TotalConsultPeriode.csv", header=TRUE, sep=";")
 
 p <- ggplot(data = results, aes(x = Date , y = Total))+ # Création du graphique
 geom_point()+ # Affiche les points
-geom_smooth(se = FALSE)+ # Affiche une zone de régression
+geom_smooth()+ # Affiche une zone de régression
 ggtitle("Taux de consultation des patients en France sur une periode de temps :")+ # Donne un titre au graphique
 xlab("Date du jour")+ # Donne un titre à l'axe des abscisses
 ylab("Nombre de consultations")+ # Donne un titre à l'axe des ordonnées
@@ -24,4 +24,4 @@ theme(axis.text.x = element_text(angle=45, hjust=1))# Permet de donné un angle 
 
 # Sauvegarde le graphique dans un fichier .png
 
-ggsave("C:\\Users\\Théotime\\Nextcloud\\COURS\\ProjetCHU\\ProjetCHU\\Graphspng\\TotalConsultPeriode.png")
+ggsave("C:\\Users\\yoann\\Documents\\DATA\\csv graph\\TotalConsultPeriode.png")
