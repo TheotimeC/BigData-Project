@@ -1,8 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
-const ObjectID = require('mongodb').ObjectID;
-const fs = require('fs');
+const { spawn } = require('child_process');
+const path = require('path');
+const R = require('r-script');
 
 
 const app = express();
@@ -257,10 +258,12 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
       const collection = db.collection('Consultation');
   
       const DateDepart1 = req.query.date1;
+      const duree = req.query.duree;
+
       let DateDepart = new Date(DateDepart1);
       DateDepart = DateDepart.toISOString();
 
-      const duree = req.query.duree;
+      
       const date1 = new Date(DateDepart1);
      
       //TEST VALEURS
@@ -312,10 +315,6 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
       }
 
       const DateFin = date1.toISOString();
-
-      console.log(DateDepart)
-      console.log(duree)
-      console.log(DateFin)
       
       const cursor = collection.aggregate([
         
@@ -341,7 +340,7 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
                       { case: { $eq: [duree, "30j"] }, then: "%Y-%m-%d" }, // tri par jour
                       { case: { $eq: [duree, "3mois"] }, then: "%Y-%m" }, // tri par mois
                       { case: { $eq: [duree, "6mois"] }, then: "%Y-%m" }, // tri par mois
-                      { case: { $eq: [duree, "1an"] }, then: "%Y" }, // tri par année
+                      { case: { $eq: [duree, "1an"] }, then: "%Y-%m" }, // tri par année
                       { case: { $eq: [duree, "2ans"] }, then: "%Y" }, // tri par année
                       { case: { $eq: [duree, "3ans"] }, then: "%Y" }, // tri par année
                       { case: { $eq: [duree, "5ans"] }, then: "%Y" }, // tri par année
@@ -368,16 +367,33 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
 
 
         try {
-              await TotalConsultPeriodeCSV.writeRecords(results);
-              console.log('Les résultats ont été écrits dans le fichier TotalConsultPeriode.csv');
-            } catch (error) {
-              console.log(error);
-              return res.status(500).send(error);
-            }
-  
-            res.sendFile(__dirname + '/consultation/ctemps.html');
-      });
-    });
+          await TotalConsultPeriodeCSV.writeRecords(results);
+          console.log('Les résultats ont été écrits dans le fichier TotalConsultPeriode.csv');
+          // Execute R script
+          const rScriptPath = 'C:\\Users\\Théotime\\Nextcloud\\COURS\\ProjetCHU\\ProjetCHU\\ScriptsR\\test.r';
+          const rProcess = spawn('C:\\Program Files\\R\\R-4.2.3\\bin\\Rscript.exe', [rScriptPath]);
+
+          rProcess.stdout.on('data', (data) => {
+            console.log(`stdout: ${data}`);
+          });
+
+          rProcess.stderr.on('data', (data) => {
+            console.error(`stderr: ${data}`);
+          });
+
+          rProcess.on('close', (code) => {
+            console.log(`child process exited with code ${code}`);
+          });
+
+
+        } catch (error) {
+          console.log(error);
+          return res.status(500).send(error);
+        }
+
+        res.sendFile(__dirname + '/consultation/ctemps.html');
+  });
+});
 
 
 
@@ -452,10 +468,6 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
 
       const DateFin = date1.toISOString();
 
-      console.log(DateDepart)
-      console.log(duree)
-      console.log(DateFin)
-      
       const cursor = collection.aggregate([
         
         // Match les consultations entre les deux dates
@@ -480,7 +492,7 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
                       { case: { $eq: [duree, "30j"] }, then: "%Y-%m-%d" }, // tri par jour
                       { case: { $eq: [duree, "3mois"] }, then: "%Y-%m" }, // tri par mois
                       { case: { $eq: [duree, "6mois"] }, then: "%Y-%m" }, // tri par mois
-                      { case: { $eq: [duree, "1an"] }, then: "%Y" }, // tri par année
+                      { case: { $eq: [duree, "1an"] }, then: "%Y-%m" }, // tri par année
                       { case: { $eq: [duree, "2ans"] }, then: "%Y" }, // tri par année
                       { case: { $eq: [duree, "3ans"] }, then: "%Y" }, // tri par année
                       { case: { $eq: [duree, "5ans"] }, then: "%Y" }, // tri par année
@@ -503,11 +515,16 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
 
       const results = await cursor.toArray();
 
+      const flatResults = results.map(result => ({
+        date: result._id,
+        count: result.count
+      }));
+
         client.close();
 
 
         try {
-              await TotalHospitPeriodeCSV.writeRecords(results);
+              await TotalHospitPeriodeCSV.writeRecords(flatResults);
               console.log('Les résultats ont été écrits dans le fichier TotalHospitPeriode.csv');
             } catch (error) {
               console.log(error);
