@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 const { spawn } = require('child_process');
 const path = require('path');
 const R = require('r-script');
@@ -16,8 +17,9 @@ app.use('/consultation', express.static('consultation'));
 app.use(express.static(__dirname + '/public'));
 
 //CONNECTION INFO
-const url = 'mongodb://127.0.0.1:27017/';
+const url = 'mongodb://127.0.0.1:27017';
 const dbName = 'CHU';
+
 
 //--------------------------------------------------------------//
 //------------------------CSV WRITERS---------------------------//
@@ -143,16 +145,16 @@ app.get('/', function(req, res) {
   //-------------------------------------------------------------------//
   //------------------------CONNECT MONGODB----------------------------//
   //-------------------------------------------------------------------//
-MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
-
-    if (err) throw err;
-
-    const db = client.db('CHU');
-
-    console.log(db);
-    console.log("Connected to MongoDB");
-
-
+  mongoose.connect('mongodb://127.0.0.1:27017/CHU', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log('Connexion à la base de données réussie');
+  })
+  .catch((error) => {
+    console.log('Erreur lors de la connexion à la base de données :', error);
+  });
   //-------------------------------------------------------------------//
   //--------------------APPGET TotalDiagPeriode------------------------//
   //-------------------------------------------------------------------//
@@ -241,8 +243,7 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
       
     });
     
-  });
-  
+
 
   //-------------------------------------------------------------------//
   //-------------------APPGET TotalConsultPeriode----------------------//
