@@ -16,8 +16,8 @@ app.use('/consultation', express.static('consultation'));
 app.use(express.static(__dirname + '/public'));
 
 //CONNECTION INFO
-const url = 'mongodb://127.0.0.1:27017/';
-const dbName = 'CHU';
+const url = 'mongodb://127.0.0.1:27017';
+const dbName = 'ProjetCHU';
 
 //--------------------------------------------------------------//
 //------------------------CSV WRITERS---------------------------//
@@ -147,10 +147,11 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
 
     if (err) throw err;
 
-    const db = client.db('CHU');
+    const db = client.db('ProjetCHU');
 
     console.log(db);
     console.log("Connected to MongoDB");
+
 
 
   //-------------------------------------------------------------------//
