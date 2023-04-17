@@ -7,6 +7,7 @@ const path = require('path');
 const R = require('r-script');
 
 
+
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,6 +21,32 @@ app.use(express.static(__dirname + '/public'));
 const url = 'mongodb://127.0.0.1:27017';
 const dbName = 'CHU';
 
+const diagnosticSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
+  code_diag: String,
+  diagnostic: String,
+});
+
+const Diagnostic = mongoose.model('Diagnostic', diagnosticSchema);
+
+module.exports = Diagnostic;
+
+
+const consultationSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
+  num_consultation: { type: String, required: true },
+  id_patient: { type: String, required: true },
+  id_prof_sante: { type: String, required: true },
+  code_diag: { type: String, required: true },
+  motif: { type: String, required: true },
+  date_consultation: { type: Date, required: true },
+  heure_debut: { type: String, required: true },
+  heure_fin: { type: String, required: true }
+});
+
+const Consultation = mongoose.model('Consultation', consultationSchema);
+
+module.exports = Consultation;
 
 //--------------------------------------------------------------//
 //------------------------CSV WRITERS---------------------------//
@@ -137,67 +164,66 @@ app.get('/autre/satisfaction', (req, res) => {
 });
 
 //css 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, 'public/css/style.css'));
-  });
+  app.get('/', function(req, res) {
+      res.sendFile(path.join(__dirname, 'public/css/style.css'));
+    });
 
 
   //-------------------------------------------------------------------//
   //------------------------CONNECT MONGODB----------------------------//
   //-------------------------------------------------------------------//
-  mongoose.connect('mongodb://127.0.0.1:27017/CHU', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() => {
-    console.log('Connexion à la base de données réussie');
-  })
-  .catch((error) => {
-    console.log('Erreur lors de la connexion à la base de données :', error);
+  
+  
+
+  const dbURI = 'mongodb://127.0.0.1/CHU';
+
+  // Connexion à la base de données
+  mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
+  
+  // Gestion des événements de connexion
+  mongoose.connection.on('connected', () => {
+    console.log(`Mongoose est connecté à ${dbURI}`);
   });
+  
+  mongoose.connection.on('error', (err) => {
+    console.log(`Mongoose a rencontré une erreur de connexion : ${err}`);
+  });
+  
+  mongoose.connection.on('disconnected', () => {
+    console.log('Mongoose est déconnecté');
+  });
+  
   //-------------------------------------------------------------------//
   //--------------------APPGET TotalDiagPeriode------------------------//
   //-------------------------------------------------------------------//
-  app.get('/TotalDiagPeriode', (req, res) => {
-    const client = new MongoClient(url, { useUnifiedTopology: true });
-    client.connect(async function(err) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send(err);
-      }
-  
-      const collection = db.collection('Diagnostic');
-  
+  app.get('/TotalDiagPeriode', async (req, res) => {
+    try {
       const keyword = req.query.keyword;
-      const date1 = req.query.date1; 
-      const date2 = req.query.date2; 
-
-      const query = { $text: { $search: keyword } };
-      
-      const cursor = collection.aggregate([
+      const date1 = new Date(req.query.date1);
+      const date2 = new Date(req.query.date2);
+      const query = { diagnostic: {$regex: keyword}};
+      const results = await Diagnostic.aggregate([
         {
-          $match: query
+          $match: { diagnostic: {$regex: keyword}}
         },
         {
-          $lookup:
-            {
-              from: 'Consultation',
-              localField: 'code_diag',
-              foreignField: 'code_diag',
-              as: 'consultations'
-            }
+          $lookup: {
+            from: 'Consultations',
+            localField: 'code_diag',
+            foreignField: 'code_diag',
+            as: 'consultations'
+          }
         },
         {
-          $unwind: "$consultations" // aplatit le tableau consultations
+          $unwind: "$consultations"
         },
         {
-          $project:
-            {
-              _id: 0,
-              diagnostic: 1,
-              date_consultation: "$consultations.date_consultation",
-              month: { $month: { $toDate: "$consultations.date_consultation" } }
-            }
+          $project: {
+            _id: 0,
+            diagnostic: 1,
+            date_consultation: "$consultations.date_consultation",
+            month: { $month: { $toDate: "$consultations.date_consultation" } }
+          }
         },
         {
           $match: {
@@ -208,40 +234,34 @@ app.get('/', function(req, res) {
           }
         },
         {
-          $group:{
-            
-            _id:{"diagnostic" : "$diagnostic"}, 
-            count:{$sum:1},
-
+          $group: {
+            _id: { diagnostic: "$diagnostic" },
+            count: { $sum: 1 },
           }
         },
         {
-          $skip:0
+          $skip: 0
         }
       ]);
-
-      const results = await cursor.toArray();
+      
+      
 
       const flatResults = results.map(result => ({
-        diagnostic : result._id.diagnostic,
+        diagnostic: result._id.diagnostic,
         date: result._id,
         count: result.count
       }));
-
-        client.close();
-
-        try {
-              await TotalDiagPeriodeCSV.writeRecords(flatResults);
-              console.log('Les résultats ont été écrits dans le fichier TotalDiagPeriode.csv');
-            } catch (error) {
-              console.log(error);
-              return res.status(500).send(error);
-            }
   
-            res.sendFile(__dirname + '/consultation/cdiag.html');
-      });
+      await TotalDiagPeriodeCSV.writeRecords(flatResults);
+      console.log('Les résultats ont été écrits dans le fichier TotalDiagPeriode.csv');
       
-    });
+      res.send(flatResults);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
+    }
+  });
+  
     
 
 
@@ -371,7 +391,7 @@ app.get('/', function(req, res) {
           await TotalConsultPeriodeCSV.writeRecords(results);
           console.log('Les résultats ont été écrits dans le fichier TotalConsultPeriode.csv');
           // Execute R script
-          const rScriptPath = 'C:\\Users\\Théotime\\Nextcloud\\COURS\\ProjetCHU\\ProjetCHU\\ScriptsR\\test.r';
+          /*const rScriptPath = 'C:\\Users\\Théotime\\Nextcloud\\COURS\\ProjetCHU\\ProjetCHU\\ScriptsR\\test.r';
           const rProcess = spawn('C:\\Program Files\\R\\R-4.2.3\\bin\\Rscript.exe', [rScriptPath]);
 
           rProcess.stdout.on('data', (data) => {
@@ -386,7 +406,7 @@ app.get('/', function(req, res) {
             console.log(`child process exited with code ${code}`);
           });
 
-
+            */
         } catch (error) {
           console.log(error);
           return res.status(500).send(error);
