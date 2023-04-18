@@ -18,11 +18,7 @@ app.use('/consultation', express.static('consultation'));
 app.use(express.static(__dirname + '/public'));
 
 //CONNECTION INFO
-<<<<<<< HEAD
-const url = 'mongodb://localhost:27017';
-=======
-const url = 'mongodb://127.0.0.1:27017';
->>>>>>> 3eb9534779e53cb8ea3f4a13d886cbbbaf34d03a
+
 const dbName = 'CHU';
 
 const diagnosticSchema = new mongoose.Schema({
