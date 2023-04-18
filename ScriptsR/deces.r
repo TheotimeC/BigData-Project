@@ -1,5 +1,5 @@
 # Chargement du fichier CSV
-data <- read.csv("fichier.csv")
+data <- read.csv("D:\\A3\\BIGDATA\\ProjetCHU\\CSVrequetes\\DecesPeriode.csv")
 
 # Chargement des packages nécessaires
 library(ggplot2)

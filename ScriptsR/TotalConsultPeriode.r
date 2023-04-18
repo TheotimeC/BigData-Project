@@ -11,7 +11,7 @@ library(ggthemes) # permet de donner un style au graphiques
 
 # Stockage du csv dans une variable
 
-results <- read.csv2("C:\\Users\\yoann\\Documents\\DATA\\csv graph\\TotalConsultPeriode.csv", header=TRUE, sep=";")
+results <- read.csv2("D:\\A3\\BIGDATA\\ProjetCHU\\CSVrequetes\\TotalConsultPeriode.csv", header=TRUE, sep=";")
 
 p <- ggplot(data = results, aes(x = Date , y = Total))+ # Création du graphique
 geom_point()+ # Affiche les points
@@ -24,4 +24,4 @@ theme(axis.text.x = element_text(angle=45, hjust=1))# Permet de donné un angle 
 
 # Sauvegarde le graphique dans un fichier .png
 
-ggsave("C:\\Users\\yoann\\Documents\\DATA\\csv graph\\TotalConsultPeriode.png")
+ggsave("D:\\A3\\BIGDATA\\ProjetCHU\\GraphsR\\TotalConsultPeriode.png")
