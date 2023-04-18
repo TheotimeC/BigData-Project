@@ -198,7 +198,19 @@
               </form>
             </div>
             <div class="col-sm-9 col-md-6 col-lg-8" style=" border: 1px solid #CCC;  border-radius: 5px; padding: 10px; height: 75%; ">
-            
+            <script>
+                const form = document.querySelector('form');
+                const display = document.querySelector('.col-lg-8');
+                form.addEventListener('submit', (event) => {
+                  event.preventDefault();
+                  const keyword = document.querySelector('#keyword').value;
+                  const date1 = document.querySelector('#date1').value;
+                  const date2 = document.querySelector('#date2').value;
+                  const message = `Vous avez entré "${keyword}" des dates "${date1}" au "${date2}" `;
+                  display.innerHTML = message;
+                });
+            </script>
+              
             </div>
           </div>
         </div>

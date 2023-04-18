@@ -15,7 +15,7 @@ app.use('/consultation', express.static('consultation'));
 app.use(express.static(__dirname + '/public'));
 
 //CONNECTION INFO
-const url = 'mongodb://127.0.0.1:27017/';
+const url = 'mongodb://localhost:27017';
 const dbName = 'CHU';
 
 //--------------------------------------------------------------//
