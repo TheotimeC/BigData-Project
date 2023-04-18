@@ -1,8 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
-const ObjectID = require('mongodb').ObjectID;
-const fs = require('fs');
+const mongoose = require('mongoose');
+const { spawn } = require('child_process');
+const path = require('path');
+const R = require('r-integration');
+
 
 
 const app = express();
@@ -15,8 +18,39 @@ app.use('/consultation', express.static('consultation'));
 app.use(express.static(__dirname + '/public'));
 
 //CONNECTION INFO
+<<<<<<< HEAD
 const url = 'mongodb://localhost:27017';
+=======
+const url = 'mongodb://127.0.0.1:27017';
+>>>>>>> 3eb9534779e53cb8ea3f4a13d886cbbbaf34d03a
 const dbName = 'CHU';
+
+const diagnosticSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
+  code_diag: String,
+  diagnostic: String,
+});
+
+const Diagnostic = mongoose.model('Diagnostic', diagnosticSchema);
+
+module.exports = Diagnostic;
+
+
+const consultationSchema = new mongoose.Schema({
+  _id: mongoose.Schema.Types.ObjectId,
+  num_consultation: { type: String },
+  id_patient: { type: String },
+  id_prof_sante: { type: String },
+  code_diag: { type: String },
+  motif: { type: String },
+  date_consultation: { type: Date },
+  heure_debut: { type: String },
+  heure_fin: { type: String}
+});
+
+const Consultation = mongoose.model('Consultation', consultationSchema);
+
+module.exports = Consultation;
 
 //--------------------------------------------------------------//
 //------------------------CSV WRITERS---------------------------//
@@ -117,6 +151,7 @@ app.get('/consultation/pro', (req, res) => {
 
 app.get('/consultation/temps', (req, res) => {
     res.sendFile(__dirname + '/consultation/ctemps.html');
+
 });
 
 app.get('/consultation/diag', (req, res) => {
@@ -134,67 +169,101 @@ app.get('/autre/satisfaction', (req, res) => {
 });
 
 //css 
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, 'public/css/style.css'));
-  });
+  app.get('/', function(req, res) {
+      res.sendFile(path.join(__dirname, 'public/css/style.css'));
+    });
 
 
   //-------------------------------------------------------------------//
   //------------------------CONNECT MONGODB----------------------------//
   //-------------------------------------------------------------------//
-MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
+  
+  
 
-    if (err) throw err;
+  const dbURI = 'mongodb://127.0.0.1/CHU';
 
-    const db = client.db('CHU');
+  // Connexion à la base de données
+  //mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
-    console.log(db);
-    console.log("Connected to MongoDB");
+  mongoose.connect(dbURI, { useNewUrlParser: true })
+  .then(() => {
+    console.log('Connexion à la base de données réussie');
+    console.log(mongoose.connection.readyState);
+  })
+  .catch((error) => {
+    console.error('Erreur de connexion à la base de données:', error);
+  });
 
+  
+  // Gestion des événements de connexion
+  mongoose.connection.on('connected', () => {
+    console.log(`Mongoose est connecté à ${dbURI}`);
+  });
+  
+  mongoose.connection.on('error', (err) => {
+    console.log(`Mongoose a rencontré une erreur de connexion : ${err}`);
+  });
+  
+  mongoose.connection.on('disconnected', () => {
+    console.log('Mongoose est déconnecté');
+  });
 
   //-------------------------------------------------------------------//
   //--------------------APPGET TotalDiagPeriode------------------------//
   //-------------------------------------------------------------------//
-  app.get('/TotalDiagPeriode', (req, res) => {
-    const client = new MongoClient(url, { useUnifiedTopology: true });
-    client.connect(async function(err) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send(err);
-      }
-  
-      const collection = db.collection('Diagnostic');
-  
-      const keyword = req.query.keyword;
-      const date1 = req.query.date1; 
-      const date2 = req.query.date2; 
+  app.get('/TotalDiagPeriode', async (req, res) => {
 
-      const query = { $text: { $search: keyword } };
+    try {
       
-      const cursor = collection.aggregate([
+      const keyword = req.query.keyword;
+      const date1 = req.query.date1;
+      const date2 = req.query.date2;
+      
+      
+      //const query = { diagnostic: { $regex: keyword, $options:"i" } };
+
+
+      const date11 = new Date(date1);
+      const datedepart = date11.toISOString();
+
+      const date22 = new Date(date2);
+      const datefin = date22.toISOString();
+
+
+      console.log(keyword);
+      console.log(datedepart);
+      console.log(datefin);
+
+      console.log(date1);
+      console.log(date2);
+
+      const db = mongoose.connection;
+
+      //console.log(query)
+
+      var results = await db.collection('Diagnostic').aggregate([
         {
-          $match: query
+          $match: {
+            diagnostic: { $regex: keyword, $options: "i" }
+          }
         },
         {
-          $lookup:
-            {
-              from: 'Consultation',
-              localField: 'code_diag',
-              foreignField: 'code_diag',
-              as: 'consultations'
-            }
+          $lookup: {
+            from: "Consultation",
+            localField: "code_diag",
+            foreignField: "code_diag",
+            as: "consultations"
+          }
         },
         {
-          $unwind: "$consultations" // aplatit le tableau consultations
+          $unwind: "$consultations"
         },
         {
-          $project:
-            {
-              _id: 0,
-              diagnostic: 1,
-              date_consultation: "$consultations.date_consultation",
-              month: { $month: { $toDate: "$consultations.date_consultation" } }
-            }
+          $project: {
+            _id: 0,
+            diagnostic: 1,
+            date_consultation: "$consultations.date_consultation"
+          }
         },
         {
           $match: {
@@ -205,62 +274,45 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
           }
         },
         {
-          $group:{
-            
-            _id:{"diagnostic" : "$diagnostic"}, 
-            count:{$sum:1},
-
+          $group: {
+            _id: { diagnostic: "$diagnostic" },
+            count: { $sum: 1 }
           }
-        },
-        {
-          $skip:0
         }
-      ]);
-
-      const results = await cursor.toArray();
-
+      ]).toArray();
+      
       const flatResults = results.map(result => ({
-        diagnostic : result._id.diagnostic,
-        date: result._id,
+        diagnostic: result._id.diagnostic,
         count: result.count
       }));
-
-        client.close();
-
-        try {
-              await TotalDiagPeriodeCSV.writeRecords(flatResults);
-              console.log('Les résultats ont été écrits dans le fichier TotalDiagPeriode.csv');
-            } catch (error) {
-              console.log(error);
-              return res.status(500).send(error);
-            }
   
-            res.sendFile(__dirname + '/consultation/cdiag.html');
-      });
+      await TotalDiagPeriodeCSV.writeRecords(flatResults);
+      console.log('Les résultats ont été écrits dans le fichier TotalDiagPeriode.csv');
+      //let result = R.executeRScript("./ScriptsR/TotalConsultPeriode.r");
       
-    });
-    
+      res.sendFile(__dirname+"/consultation/cdiag.html");
+      
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
+    }
   });
-  
+    
+
 
   //-------------------------------------------------------------------//
   //-------------------APPGET TotalConsultPeriode----------------------//
   //-------------------------------------------------------------------//
-  app.get('/TotalConsultPeriode', (req, res) => {
-    const client = new MongoClient(url, { useUnifiedTopology: true });
-    client.connect(async function(err) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send(err);
-      }
-      const db = client.db('CHU');
-      const collection = db.collection('Consultation');
+  app.get('/TotalConsultPeriode',async (req, res) => {
+
   
       const DateDepart1 = req.query.date1;
+      const duree = req.query.duree;
+
       let DateDepart = new Date(DateDepart1);
       DateDepart = DateDepart.toISOString();
 
-      const duree = req.query.duree;
+      
       const date1 = new Date(DateDepart1);
      
       //TEST VALEURS
@@ -312,12 +364,15 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
       }
 
       const DateFin = date1.toISOString();
-
-      console.log(DateDepart)
-      console.log(duree)
-      console.log(DateFin)
       
-      const cursor = collection.aggregate([
+
+      //console.log(query)
+
+      const db = mongoose.connection;
+
+      //console.log(query)
+
+      var results = await db.collection('Consultation').aggregate([
         
         // Match les consultations entre les deux dates
         {
@@ -341,7 +396,7 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
                       { case: { $eq: [duree, "30j"] }, then: "%Y-%m-%d" }, // tri par jour
                       { case: { $eq: [duree, "3mois"] }, then: "%Y-%m" }, // tri par mois
                       { case: { $eq: [duree, "6mois"] }, then: "%Y-%m" }, // tri par mois
-                      { case: { $eq: [duree, "1an"] }, then: "%Y" }, // tri par année
+                      { case: { $eq: [duree, "1an"] }, then: "%Y-%m" }, // tri par année
                       { case: { $eq: [duree, "2ans"] }, then: "%Y" }, // tri par année
                       { case: { $eq: [duree, "3ans"] }, then: "%Y" }, // tri par année
                       { case: { $eq: [duree, "5ans"] }, then: "%Y" }, // tri par année
@@ -360,40 +415,34 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
         
         // Trier les résultats
         { $sort: { _id: 1 } },
-      ]);
+      ]).toArray();
 
-      const results = await cursor.toArray();
-
-        client.close();
+        
 
 
         try {
-              await TotalConsultPeriodeCSV.writeRecords(results);
-              console.log('Les résultats ont été écrits dans le fichier TotalConsultPeriode.csv');
-            } catch (error) {
-              console.log(error);
-              return res.status(500).send(error);
-            }
+          await TotalConsultPeriodeCSV.writeRecords(results);
+          console.log('Les résultats ont été écrits dans le fichier TotalConsultPeriode.csv');
+          // Execute R script
+
+          let result = R.executeRScript("./ScriptsR/TotalConsultPeriode.r");
   
-            res.sendFile(__dirname + '/consultation/ctemps.html');
-      });
-    });
+        } catch (error) {
+          console.log(error);
+          return res.status(500).send(error);
+        }
+        let imagePath = path.join(__dirname, './GraphsR/TotalConsultPeriode.png');
+        res.sendFile(imagePath);
+  });
 
 
 
   //-------------------------------------------------------------------//
   //--------------------APPGET TotalHospiPeriode-----------------------//
   //-------------------------------------------------------------------//
-  app.get('/TotalHospiPeriode', (req, res) => {
-    const client = new MongoClient(url, { useUnifiedTopology: true });
-    client.connect(async function(err) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send(err);
-      }
+  app.get('/TotalHospiPeriode',async (req, res) => {
+
   
-      const db = client.db('CHU');
-      const collection = db.collection('Hospitalisation');
   
       const DateDepart1 = req.query.date1;
       let DateDepart = new Date(DateDepart1);
@@ -452,11 +501,11 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
 
       const DateFin = date1.toISOString();
 
-      console.log(DateDepart)
-      console.log(duree)
-      console.log(DateFin)
-      
-      const cursor = collection.aggregate([
+      const db = mongoose.connection;
+
+      //console.log(query)
+
+      var results = await db.collection('Hospitalisation').aggregate([
         
         // Match les consultations entre les deux dates
         {
@@ -480,7 +529,7 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
                       { case: { $eq: [duree, "30j"] }, then: "%Y-%m-%d" }, // tri par jour
                       { case: { $eq: [duree, "3mois"] }, then: "%Y-%m" }, // tri par mois
                       { case: { $eq: [duree, "6mois"] }, then: "%Y-%m" }, // tri par mois
-                      { case: { $eq: [duree, "1an"] }, then: "%Y" }, // tri par année
+                      { case: { $eq: [duree, "1an"] }, then: "%Y-%m" }, // tri par année
                       { case: { $eq: [duree, "2ans"] }, then: "%Y" }, // tri par année
                       { case: { $eq: [duree, "3ans"] }, then: "%Y" }, // tri par année
                       { case: { $eq: [duree, "5ans"] }, then: "%Y" }, // tri par année
@@ -499,38 +548,37 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
         
         // Trier les résultats
         { $sort: { _id: 1 } },
-      ]);
+      ]).toArray();
 
-      const results = await cursor.toArray();
 
-        client.close();
+      const flatResults = results.map(result => ({
+        date: result._id,
+        count: result.count
+      }));
+
+       
 
 
         try {
-              await TotalHospitPeriodeCSV.writeRecords(results);
+              await TotalHospitPeriodeCSV.writeRecords(flatResults);
               console.log('Les résultats ont été écrits dans le fichier TotalHospitPeriode.csv');
+              //let result = R.executeRScript("./ScriptsR/Total.r");
             } catch (error) {
               console.log(error);
               return res.status(500).send(error);
             }
   
-            res.sendFile(__dirname + '/hospitalisation/htemps.html');
+            res.send(results);
       });
-    });
+
 
 
   //-------------------------------------------------------------------//
   //------------------APPGET TotalHospiDiagPeriode---------------------//
   //-------------------------------------------------------------------//
-  app.get('/TotalHospiDiagPeriode', (req, res) => {
-    const client = new MongoClient(url, { useUnifiedTopology: true });
-    client.connect(async function(err) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send(err);
-      }
-      const db = client.db('CHU');
-      const collection = db.collection('Diagnostic');
+  app.get('/TotalHospiDiagPeriode',async (req, res) => {
+
+    
   
       const keyword = req.query.keyword;
       let date1 = req.query.date1; 
@@ -538,8 +586,10 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
        
       
       const query = { $text: { $search: keyword } };
-            
-      const cursor = collection.aggregate([
+
+      const db = mongoose.connection;
+
+      var results = await db.collection('Diagnostic').aggregate([
         {
           $match: query
         },
@@ -582,51 +632,43 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
         },
         {
           $skip:0
-        }
-      ]);
-
-      const results = await cursor.toArray();
+        },
+      ]).toArray();
 
       const flatResults = results.map(result => ({
         diagnostic: result._id.diagnostic,
         count: result.count
       }));
 
-      client.close();
+      
 
 
       try {
         await TotalHospiDiagPeriodeCSV.writeRecords(flatResults);
         console.log('Les résultats ont été écrits dans le fichier TotalHospiDiagPeriode.csv');
+        //let result = R.executeRScript("./ScriptsR/TotalConsultPeriode.r");
       } catch (error) {
         console.log(error);
         return res.status(500).send(error);
       }
         
-      res.sendFile(__dirname + '/hospitalisation/hdiag.html');
+      res.send(results);
       });
 
-    });
+   
   
 
   //-------------------------------------------------------------------//
   //----------------APPGET TotalHospiConsultAgeSexe--------------------//
   //-------------------------------------------------------------------//
-  app.get('/TotalHospiConsultAgeSexe', (req, res) => {
-    const client = new MongoClient(url, { useUnifiedTopology: true });
-    client.connect(async function(err) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send(err);
-      }
-      
-      const db = client.db('CHU');
-      const collection = db.collection('Patient');
-  
+  app.get('/TotalHospiConsultAgeSexe',async (req, res) => {
+
+      const db = mongoose.connection;
+
       const choix = req.query.age; 
-      var cursor;
+      var results;
       if(choix=='age'){
-         cursor = collection.aggregate([
+        results = await db.collection('Patient').aggregate([
           {
             $lookup: {
               from: "Hospitalisation",
@@ -644,9 +686,10 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
               total_hospitalisations: { $sum: 1 }
             }
           }
-        ]);
+        ]).toArray();
+
     }else if(choix=='sexe'){
-       cursor = collection.aggregate([
+      results = await db.collection('Patient').aggregate([
         {
           $lookup: {
             from: "Hospitalisation",
@@ -664,23 +707,25 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
             total_hospitalisations: { $sum: 1 }
           }
         }
-      ]);
+      ]).toArray();
 
     }
 
-      const results = await cursor.toArray();
+ 
 
       const flatResults = results.map(result => ({
         _id : result._id,
         total: result.total_hospitalisations,
       }));
 
-        client.close();
+    
 
         if(choix=='age'){
             try {
                   await TotalHospiAgeCSV.writeRecords(flatResults);
                   console.log('Les résultats ont été écrits dans le fichier TotalHospiAgeSexe.csv');
+                  let result = R.executeRScript("./ScriptsR/TotalHospiAge.r");
+                  let results = R.executeRScript("./ScriptsR/TotalHospiAgeCamembert.r");
                 } catch (error) {
                   console.log(error);
                   return res.status(500).send(error);
@@ -689,16 +734,18 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
           try {
             await TotalHospiSexeCSV.writeRecords(flatResults);
             console.log('Les résultats ont été écrits dans le fichier TotalHospiAgeSexe.csv');
+            let result = R.executeRScript("./ScriptsR/TotalHospiSexe.r");
+            let results = R.executeRScript("./ScriptsR/TotalHospiSexeCamembert.r");
           } catch (error) {
             console.log(error);
             return res.status(500).send(error);
           }
         }
 
-            res.sendFile(__dirname + '/hospitalisation/hage.html');
+            res.send(results);
       });
       
-    });
+
 
 
   //-------------------------------------------------------------------//
@@ -743,23 +790,20 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
   //-------------------------------------------------------------------//
   //----------------------APPGET DecesPeriode--------------------------//
   //-------------------------------------------------------------------//
-  app.get('/DecesPeriode', (req, res) => {
-    const client = new MongoClient(url, { useUnifiedTopology: true });
-    client.connect(async function(err) {
-      if (err) {
-        console.log(err);
-        return res.status(500).send(err);
-      }
-      const db = client.db('CHU');
-      const collection = db.collection('Deces');
+  app.get('/DecesPeriode',async (req, res) => {
+    const db = mongoose.connection;
+
+    //console.log(query)
+
+    
   
       const date = req.query.date;
 
-      const cursor = collection.aggregate([
+      var results = await db.collection('Deces').aggregate([
         {
           $match: {
             date_deces: {
-              $gte: "2019-01-01",
+              $gte: "2016-01-01",
               $lt: "2020-01-01"
             }
           }
@@ -769,30 +813,32 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, client) {
             _id: "$lieu_naissance",
             count: { $sum: 1 }
           }
-        }
-      ]);
+        },
+      ]).toArray();
 
-      const results = await cursor.toArray();
+      
 
       const flatResults = results.map(result => ({
         lieu : result._id,
         count: result.count
       }));
 
-        client.close();
+        
 
         try {
               await DecesPeriodeCSV.writeRecords(flatResults);
               console.log('Les résultats ont été écrits dans le fichier DecesPeriode.csv');
+              let result = R.executeRScript("./ScriptsR/TotalHospiAge.r");
+                  let results = R.executeRScript("./ScriptsR/deces.r");
             } catch (error) {
               console.log(error);
               return res.status(500).send(error);
             }
   
-            res.sendFile(__dirname + '/autre/adeces.html');
+            res.send(results);
       });
       
-    });
+ 
  
 
 
