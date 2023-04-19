@@ -784,7 +784,8 @@ app.get('/TotalConsultAgeSexe',async (req, res) => {
           _id: "$age",
           total_consultations: { $sum: 1 }
         }
-      }
+      },
+      {$limit : 10}
     ]).toArray();
 
   }else if(choix=='sexe'){
