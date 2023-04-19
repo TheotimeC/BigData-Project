@@ -830,7 +830,7 @@ app.get('/TotalConsultAgeSexe',async (req, res) => {
     try {
       await TotalConsultSexeCSV.writeRecords(flatResults);
       console.log('Les résultats ont été écrits dans le fichier TotalConsultSexe.csv');
-      let result = R.executeRScript("./ScriptsR/consultation_sexeSexe.r");
+      let result = R.executeRScript("./ScriptsR/consultation_sexe.r");
       //let results = R.executeRScript("./ScriptsR/TotalHospiSexeCamembert.r");
     } catch (error) {
       console.log(error);
