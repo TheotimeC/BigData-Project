@@ -17,6 +17,7 @@ app.use('/autre', express.static('autre'));
 app.use('/consultation', express.static('consultation'));
 app.use(express.static(__dirname + '/public'));
 
+
 //CONNECTION INFO
 
 const dbName = 'CHU';
@@ -161,6 +162,10 @@ app.get('/hospitalisation/temps', (req, res) => {
 app.get('/consultation/pro', (req, res) => {
     res.sendFile(__dirname + '/consultation/ctemps.html');
 });
+
+app.get('/consultation/age', (req,res) => {
+  res.sendFile(__dirname + '/consultation/c_age.html');
+})
 
 app.get('/consultation/temps', (req, res) => {
     res.sendFile(__dirname + '/consultation/ctemps.html');
