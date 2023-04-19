@@ -121,7 +121,8 @@ const TotalConsultAgeCSV = createObjectCsvWriter({
   header : [
     {id: '_id', title: 'Age'},
     {id: 'total', title: 'Total'}
-  ]
+  ],
+  fieldDelimiter: ';'
 });
 
 const TotalConsultSexeCSV = createObjectCsvWriter({
@@ -129,7 +130,8 @@ const TotalConsultSexeCSV = createObjectCsvWriter({
   header : [
     {id: '_id', title: 'Sexe'},
     {id: 'total', title: 'Total'}
-  ]
+  ],
+  fieldDelimiter: ';'
 });
 
 
@@ -658,8 +660,6 @@ app.get('/autre/satisfaction', (req, res) => {
         count: result.count
       }));
 
-      
-
 
       try {
         await TotalHospiDiagPeriodeCSV.writeRecords(flatResults);
@@ -735,7 +735,7 @@ app.get('/autre/satisfaction', (req, res) => {
 
         if(choix=='age'){
             try {
-                  await TotalConsultAgeCSV.writeRecords(flatResults);
+                  await TotalHospiAgeCSV.writeRecords(flatResults);
                   console.log('Les résultats ont été écrits dans le fichier TotalHospiAge.csv');
                   let result = R.executeRScript("./ScriptsR/TotalHospiAge.r");
                   let results = R.executeRScript("./ScriptsR/TotalHospiAgeCamembert.r");
@@ -745,7 +745,7 @@ app.get('/autre/satisfaction', (req, res) => {
                 }
         }else if(choix=='sexe'){
           try {
-            await TotalConsultSexeCSV.writeRecords(flatResults);
+            await TotalHospiSexeCSV.writeRecords(flatResults);
             console.log('Les résultats ont été écrits dans le fichier TotalHospiSexe.csv');
             let result = R.executeRScript("./ScriptsR/TotalHospiSexe.r");
             let results = R.executeRScript("./ScriptsR/TotalHospiSexeCamembert.r");
@@ -773,7 +773,7 @@ app.get('/TotalConsultAgeSexe',async (req, res) => {
           from: "Consultation",
           localField: "id_patient",
           foreignField: "id_patient",
-          as: "consultation"
+          as: "consultations"
         }
       },
       {
@@ -817,7 +817,7 @@ app.get('/TotalConsultAgeSexe',async (req, res) => {
 
   if(choix=='age'){
     try {
-      await TotalHospiAgeCSV.writeRecords(flatResults);
+      await TotalConsultAgeCSV.writeRecords(flatResults);
       console.log('Les résultats ont été écrits dans le fichier TotalConsultAge.csv');
       let result = R.executeRScript("./ScriptsR/consultation_age.r");
       //let results = R.executeRScript("./ScriptsR/TotalHospiAgeCamembert.r");
@@ -827,10 +827,10 @@ app.get('/TotalConsultAgeSexe',async (req, res) => {
     }
   }else if(choix=='sexe'){
     try {
-      await TotalHospiSexeCSV.writeRecords(flatResults);
+      await TotalConsultSexeCSV.writeRecords(flatResults);
       console.log('Les résultats ont été écrits dans le fichier TotalConsultSexe.csv');
-      let result = R.executeRScript("./ScriptsR/TotalHospiSexe.r");
-      let results = R.executeRScript("./ScriptsR/TotalHospiSexeCamembert.r");
+      let result = R.executeRScript("./ScriptsR/consultation_sexeSexe.r");
+      //let results = R.executeRScript("./ScriptsR/TotalHospiSexeCamembert.r");
     } catch (error) {
       console.log(error);
       return res.status(500).send(error);
