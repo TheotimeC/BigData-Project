@@ -1,58 +1,81 @@
 Diagnostic;Total
-Autres affections precisees de l'oreille externe;6
-Tumeur maligne de la peau de l'oreille et du conduit auditif externe;5
-Maladie adhesive de l'oreille moyenne;3
-Perichondrite de l'oreille externe;6
-Surdite unilaterale de transmission sans alteration de l'audition de l'autre oreille;5
-Cellulite de l'oreille externe;5
-Affection de l'oreille, sans precision;7
-Malformation congenitale de l'oreille avec atteinte de l'audition, sans precision;3
-Plaie ouverte de l'oreille, sans complication;4
-Naevus e melanocytes de l'oreille et du conduit auditif externe;11
-Polype de l'oreille moyenne;8
-Autres affections precisees de l'oreille moyenne et de l'apophyse mastoede au cours de maladies classees ailleurs;3
-Autres affections precisees de l'oreille moyenne et de l'apophyse mastoede;5
-Surdite neurosensorielle unilaterale sans alteration de l'audition de l'autre oreille;4
-Lesion traumatique superficielle de l'oreille;4
-Hemangiome de l'oreille, du nez, de la bouche et de la gorge;8
-Autres malformations congenitales precisees de l'oreille;5
-Autres affections de l'oreille et de l'apophyse mastoede postintervention;4
-Corps etranger dans l'oreille;8
-Autres affections precisees de l'oreille au cours de maladies classees ailleurs;2
-Carcinome in situ de la peau de l'oreille et du conduit auditif externe;5
-Oreilles proeminentes;4
-Plaie ouverte de l'oreille, avec complication;2
-Autres affections precisees de l'oreille;7
-Malformation congenitale de l'oreille interne;5
-Autres maladies precisees de l'oreille interne;1
-Examen des oreilles et de l'audition;7
-Autres tumeurs benignes de la peau de l'oreille et du conduit auditif externe;6
-Examen special de depistage des affections des yeux et des oreilles;5
-Malformation congenitale de l'oreille, sans precision;3
-Affection de l'oreille et de l'apophyse mastoede postintervention, sans precision;13
-Affections vasculaires et degeneratives de l'oreille;7
-Absence congenitale du pavillon de l'oreille;7
-Affection de l'oreille externe, sans precision;6
-Affections non infectieuses du pavillon de l'oreille;7
-Anomalie de position de l'oreille;4
-Thrombose de l'oreillette, de l'auricule et du ventricule comme complication courante survenant apres un infarctus aigu du myocarde;10
-Cholesteatome de l'oreille moyenne;2
-Surdite unilaterale mixte de transmission et neurosensorielle sans alteration de l'audition de l'autre oreille;11
-Affection de l'oreille moyenne et de l'apophyse mastoede, sans precision;5
-Autres affections de l'oreille externe au cours de maladies classees ailleurs;2
-Melanome malin de l'oreille et du conduit auditif externe;7
-Tumeur maligne de l'oreille moyenne;6
-Tumeur benigne de l'oreille moyenne, des fosses nasales et des sinus de la face;7
-Autres deformations de l'oreille;7
-Oreilles e en chou-fleur e;5
-Maladie de l'oreille interne, sans precision;4
-Melanome in situ de l'oreille et du conduit auditif externe;4
-Cholesteatome de l'oreille externe;5
-Antecedents familiaux de troubles de l'oeil et de l'oreille;4
+Abces d'une bourse sereuse, region scapulaire;1
+Abces du mediastin;6
+Diverticulose du celon, avec perforation et abces;9
+Abces amibien du cerveau;6
+Abces d'une bourse sereuse, siege non precise;9
+Abces d'une bourse sereuse, cheville et pied;9
+Abces de la gaine du tendon, cheville et pied;4
+Diverticulose de l'intestin grele, sans perforation ni abces;7
+Abces de la gaine du tendon, region scapulaire;4
+Abces d'une bourse sereuse, avant-bras;4
+Abces du sein associe e l'accouchement, troubles ou complications post-partum;5
+Abces intrasphincterien;3
+Autres abces du pharynx;2
+Abces de la gaine du tendon, siege non precise;4
+Abces du sein associe e l'accouchement, episode de soins non precise ou sans objet;7
+Abces phaeohyphomycosique du cerveau;6
+Abces de la gaine du tendon, region pelvienne et cuisse;1
+Abces parapharynge et retropharynge;10
+Abces cutane, furoncle et anthrax du cou;7
+Abces et kyste phaeohyphomycosiques sous-cutanes;4
 Abces de l'oreille externe;5
-Consequences du bruit sur l'oreille interne;6
-Tuberculose de l'oreille;4
-Barotraumatisme de l'oreille;2
-Pereage de l'oreille;4
-Amputation traumatique de l'oreille;7
-Autres malformations congenitales de l'oreille moyenne;6
+Abces et granulome intracreniens;7
+Abces du sein associe e l'accouchement, accouchement, avec ou sans mention de troubles antepartum;7
+Abces d'une bourse sereuse, sites multiples;6
+Abces de la prostate;5
+Abces et granulome intracreniens et intrarachidiens au cours d'affections classees ailleurs;8
+Abces de l'intestin;3
+Diverticulose de l'intestin, siege non precise, avec perforation et abces;12
+Abces de la vulve;8
+Abces amibien du poumon;7
+Abces d'une bourse sereuse, main;8
+Abces du thymus;8
+Abces extra-dural et sous-dural, sans precision;3
+Abces peri-amygdalien;5
+Abces de la rate;4
+Infection gonococcique de la partie inferieure de l'appareil genito-urinaire, avec abces periuretral et des glandes annexes;8
+Abces de la gaine du tendon, main;7
+Abces du poumon sans pneumonie;11
+epididymite avec abces;3
+Abces du foie;11
+Abces cutane, furoncle et anthrax de la face;6
+Abces de la gaine du tendon, avant-bras;10
+Cellulite et abces de la bouche;7
+Abces anorectal;9
+Diverticulose de l'intestin grele, avec perforation et abces;14
+Abces du poumon avec pneumonie;9
+Abces cutane, furoncle et anthrax, sans precision;4
+Abces du sein associe e l'accouchement, troubles ou complications antepartum;3
+Abces cutane, furoncle et anthrax d'autres localisations;10
+Abces du penis;7
+Abces rectal;8
+Abces du sein associe e l'accouchement, accouchement, avec mention de complications post-partum;6
+Abces d'une bourse sereuse, region pelvienne et cuisse;7
+Abces de la gaine du tendon, sites multiples;9
+Diverticulose du celon et de l'intestin grele, avec perforation et abces;3
+Diverticulose du celon et de l'intestin grele, sans perforation ni abces;12
+Abces de la gaine du tendon, partie superieure du bras;6
+epididymo-orchite avec abces;8
+Abces d'une bourse sereuse, autre site;7
+Abces des glandes salivaires;6
+Abces periapical avec fistule;5
+Abces, furoncle et anthrax du nez;7
+Abces cutane, furoncle et anthrax de la fesse;6
+Abces uretral;10
+Abces d'une bourse sereuse, partie inferieure de la jambe;3
+Abces d'une bourse sereuse, partie superieure du bras;10
+Abces cutane, furoncle et anthrax d'un membre;8
+Abces de la gaine du tendon, autre site;11
+Abces et granulome intrarachidiens;4
+Abces periapical sans fistule;10
+Abces renal et perirenal;5
+Abces de la gaine du tendon, partie inferieure de la jambe;8
+Abces ischiorectal;5
+Diverticulose du celon, sans perforation ni abces;7
+Infection gonococcique de la partie inferieure de l'appareil genito-urinaire, sans abces periuretral ou des glandes annexes;7
+Abces cutane, furoncle et anthrax du tronc;6
+Abces de la glande de Bartholin;5
+Abces anal;3
+Diverticulose de l'intestin, siege non precise, sans perforation ni abces;8
+Abces amibien du foie;3
