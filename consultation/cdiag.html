@@ -133,32 +133,36 @@
               <input type="submit" value="Rechercher">
               </form>    
             </div>
-<<<<<<< HEAD
+
           <div class="col-sm-9 col-md-6 col-lg-8" style=" border: 1px solid #CCC;  border-radius: 5px; margin:27px; height: 75%; width:60%; ">
        
             <script>
-                const form = document.querySelector('form');
+              const form = document.querySelector('form');
+              form.addEventListener('submit', (event) => {
+                event.preventDefault(); // prevent the form from submitting
+            
+                const keyword = document.querySelector('#keyword').value;
+                const date1 = document.querySelector('#date1').value;
+                const date2 = document.querySelector('#date2').value;
+                const message = `Vous avez entré "${keyword}" des dates "${date1}" au "${date2}".`;
+            
                 const display = document.querySelector('.col-lg-8');
-                form.addEventListener('submit', (event) => {
-                  event.preventDefault();
-                  const keyword = document.querySelector('#keyword').value;
-                  const date1 = document.querySelector('#date1').value;
-                  const date2 = document.querySelector('#date2').value;
-                  const message = `Vous avez entré "${keyword}" des dates "${date1}" au "${date2}".`;
-                  display.innerHTML = message;
-                });
+                display.innerHTML = message;
+            
+                const url = form.getAttribute('action') + `?keyword=${keyword}&date1=${date1}&date2=${date2}`;
+                window.location.href = url;
+              });
             </script>
+            
 
 
-          
-=======
             <div class="col-sm-9 col-md-6 col-lg-8" style=" border: 1px solid #CCC;  border-radius: 5px; margin:27px; height: 75%; width:60%; ">
               <div>
                 <img id="graphR" alt="Graphique généré par R" >
               </div>
   
             </div>
->>>>>>> 3eb9534779e53cb8ea3f4a13d886cbbbaf34d03a
+
           </div>
         </div>
 

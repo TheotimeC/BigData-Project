@@ -135,17 +135,20 @@
             </div>
             <div class="col-sm-9 col-md-6 col-lg-8" style=" border: 1px solid #CCC;  border-radius: 5px; margin: 25px; height: 75%; width:62%; ">
               <script>
-                  const form = document.querySelector('form');
-                  const display = document.querySelector('.col-lg-8');
-                  form.addEventListener('submit', (event) => {
+                const form = document.querySelector('form');
+                const display = document.querySelector('.col-lg-8');
+                form.addEventListener('submit', (event) => {
                   event.preventDefault();
                   const date1 = document.querySelector('#date1').value;
                   const duree = document.querySelector('input[name="duree"]:checked').value;
                   const message = `Vous avez entré la date "${date1}" et avez choisi une période de "${duree}" en utilisant des cookies en JavaScript.`;
                   display.innerHTML = message;
-                 });
-
+              
+                  const url = form.getAttribute('action') + `?date1=${date1}&duree=${duree}`;
+                  window.location.href = url;
+                });
               </script>
+              
             </div>
           </div>
         </div>
