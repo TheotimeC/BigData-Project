@@ -115,6 +115,23 @@ const DecesPeriodeCSV = createObjectCsvWriter({
   fieldDelimiter: ';'   
 });
 
+const TotalConsultAgeCSV = createObjectCsvWriter({
+  path: './CSVrequetes/TotalConsultAge.csv',
+  header : [
+    {id: '_id', title: 'Age'},
+    {id: 'total', title: 'Total'}
+  ]
+});
+
+const TotalConsultSexeCSV = createObjectCsvWriter({
+  path: './CSVrequetes/TotalConsultSexe.csv',
+  header : [
+    {id: '_id', title: 'Sexe'},
+    {id: 'total', title: 'Total'}
+  ]
+});
+
+
 
 
 
@@ -176,7 +193,7 @@ app.get('/autre/satisfaction', (req, res) => {
   
   
 
-  const dbURI = 'mongodb://127.0.0.1/CHU';
+  const dbURI = 'mongodb://127.0.0.1/ProjetCHU';
 
   // Connexion à la base de données
   //mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -706,20 +723,15 @@ app.get('/autre/satisfaction', (req, res) => {
       ]).toArray();
 
     }
-
- 
-
       const flatResults = results.map(result => ({
         _id : result._id,
         total: result.total_hospitalisations,
       }));
 
-    
-
         if(choix=='age'){
             try {
-                  await TotalHospiAgeCSV.writeRecords(flatResults);
-                  console.log('Les résultats ont été écrits dans le fichier TotalHospiAgeSexe.csv');
+                  await TotalConsultAgeCSV.writeRecords(flatResults);
+                  console.log('Les résultats ont été écrits dans le fichier TotalHospiAge.csv');
                   let result = R.executeRScript("./ScriptsR/TotalHospiAge.r");
                   let results = R.executeRScript("./ScriptsR/TotalHospiAgeCamembert.r");
                 } catch (error) {
@@ -728,8 +740,8 @@ app.get('/autre/satisfaction', (req, res) => {
                 }
         }else if(choix=='sexe'){
           try {
-            await TotalHospiSexeCSV.writeRecords(flatResults);
-            console.log('Les résultats ont été écrits dans le fichier TotalHospiAgeSexe.csv');
+            await TotalConsultSexeCSV.writeRecords(flatResults);
+            console.log('Les résultats ont été écrits dans le fichier TotalHospiSexe.csv');
             let result = R.executeRScript("./ScriptsR/TotalHospiSexe.r");
             let results = R.executeRScript("./ScriptsR/TotalHospiSexeCamembert.r");
           } catch (error) {
@@ -737,9 +749,95 @@ app.get('/autre/satisfaction', (req, res) => {
             return res.status(500).send(error);
           }
         }
-
             res.send(results);
       });
+
+
+//-------------------------------------------------------------------//
+//----------------APPGET TotalConsultAgeSexe--------------------//
+//-------------------------------------------------------------------//
+app.get('/TotalConsultAgeSexe',async (req, res) => {
+
+  const db = mongoose.connection;
+  const choix = req.query.age;
+  var results;
+  if(choix=='age'){
+    results = await db.collection('Patient').aggregate([
+      {
+        $lookup: {
+          from: "Consultation",
+          localField: "id_patient",
+          foreignField: "id_patient",
+          as: "consultation"
+        }
+      },
+      {
+        $unwind: "$consultations"
+      },
+      {
+        $group: {
+          _id: "$age",
+          total_consultations: { $sum: 1 }
+        }
+      }
+    ]).toArray();
+
+  }else if(choix=='sexe'){
+    results = await db.collection('Patient').aggregate([
+      {
+        $lookup: {
+          from: "Consultation",
+          localField: "id_patient",
+          foreignField: "id_patient",
+          as: "consultations"
+        }
+      },
+      {
+        $unwind: "$consultations"
+      },
+      {
+        $group: {
+          _id: "$sexe",
+          total_consultations: { $sum: 1 }
+        }
+      }
+    ]).toArray();
+
+  }
+
+  const flatResults = results.map(result => ({
+    _id : result._id,
+    total: result.total_consultations,
+  }));
+
+  if(choix=='age'){
+    try {
+      await TotalHospiAgeCSV.writeRecords(flatResults);
+      console.log('Les résultats ont été écrits dans le fichier TotalConsultAge.csv');
+      let result = R.executeRScript("./ScriptsR/consultation_age.r");
+      //let results = R.executeRScript("./ScriptsR/TotalHospiAgeCamembert.r");
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send(error);
+    }
+  }else if(choix=='sexe'){
+    try {
+      await TotalHospiSexeCSV.writeRecords(flatResults);
+      console.log('Les résultats ont été écrits dans le fichier TotalConsultSexe.csv');
+      let result = R.executeRScript("./ScriptsR/TotalHospiSexe.r");
+      let results = R.executeRScript("./ScriptsR/TotalHospiSexeCamembert.r");
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send(error);
+    }
+  }
+
+  res.send(results);
+});
+
+
+
+
       
 
 
